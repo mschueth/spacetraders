@@ -7,14 +7,23 @@ import {
   Link
 } from "react-router-dom";
 
+import {Game} from "./types/game"
 import Axios from "axios";
 
 
 import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 
-export const AXIOS_INSTANCE = Axios.create();
-export const ROOT_URL = (process.env.NODE_ENV === 'development')?`//localhost:${process.env.PORT || 3000}`:``;
+export const API = {
+  AXIOS_INSTANCE: Axios.create(),
+  BASE_URL: process.env.BASE_URL || `https://api.spacetraders.io/v2/`
+}
+
+export var GAME_DATA:Game={
+  accounts:[],
+  data:{},
+}
+
 
 export default function App() {
 
