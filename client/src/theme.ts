@@ -4,6 +4,7 @@ import * as colors from '@mui/material/colors';
 // A custom theme for this app
 const theme = createTheme({
   palette: {
+    mode: 'dark',
     primary: {
       main: colors.blue[400],
     },

@@ -1,8 +1,8 @@
 
-import { Agent } from './agent';
-import { Contract } from './contract';
-import { Faction } from './faction';
-import { Ship } from './ship';
+import { Agent } from './generated/agent';
+import { Contract } from './generated/contract';
+import { Faction } from './generated/faction';
+import { Ship } from './generated/ship';
 
 export type GameData = {
     token?:string;
