@@ -11,35 +11,39 @@ import {
 }  from '@mui/material';
 
 
-import { Faction } from "../types/generated/faction"
+import { AccountDetails } from "../types/game";
 
 
-export default function FactionCard(props:{faction:Faction}) {
+export default function AccountDetailCard(props:{Account:AccountDetails}) {
 
-    const faction = props.faction;
+    const accountDetails = props.Account;
 
     const nameAbr = (name:string) => {
         return name.split(/[\s,\-,\_]+/).map(n=>n.slice(0,1)).join('')
     }
 
     return (
-        <Card elevation={6} id={`faction-card-${faction.symbol}`}>
+        <Card elevation={6} id={`faction-card-${accountDetails.agent.symbol}`}>
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: colors.red[500] }} aria-label="faction">
-              {nameAbr(faction.name)}
+              {nameAbr(accountDetails.agent.symbol)}
             </Avatar>
           }
-          title={faction.name}
-          subheader={faction.headquarters}
+          title={accountDetails.agent.symbol}
+          subheader={`last known credits: ${accountDetails.agent.credits}₡`}
+        />
+        <CardHeader
+          title={accountDetails.faction.name}
+          subheader={accountDetails.faction.headquarters}
         />
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            {faction.description}
+            {accountDetails.faction.description}
           </Typography>
         </CardContent>
         <CardContent style={{justifyContent: 'space-evenly'}}>
-            {faction.traits.map(trait=>{return (
+            {accountDetails.faction.traits.map(trait=>{return (
                 <Tooltip title={trait.description}>
                     <Chip label={trait.name} color="primary" variant="outlined" />
                 </Tooltip>

@@ -1,6 +1,13 @@
 import { createTheme } from '@mui/material/styles';
 import * as colors from '@mui/material/colors';
 
+declare module '@mui/material/Paper' {
+  interface PaperPropsVariantOverrides {
+    MainContent: true;
+  }
+}
+
+
 // A custom theme for this app
 const theme = createTheme({
   palette: {
@@ -13,6 +20,13 @@ const theme = createTheme({
     },
     error: {
       main: colors.red[400],
+    },
+  },
+  components: {
+    MuiChip: {
+      defaultProps: {
+        size: "small",
+      }
     },
   },
 });

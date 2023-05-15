@@ -21,3 +21,9 @@ export type Game ={
     accounts: Account[],
     data: GameData,
 }
+
+export type AccountDetails ={
+    agent:Agent,
+    token:string,
+    faction:Faction,
+}
