@@ -4,29 +4,31 @@ import {
   CardHeader,
   CardContent,
   Chip,
-  colors, 
+  Grid,
   Typography,
   Tooltip,
   Avatar ,
 }  from '@mui/material';
 
+import { 
+  badgeColor, 
+  nameAbr, 
+} from "../util/format"
+
 
 import { Faction } from "../types/generated/faction"
+import { WidthFull } from '@mui/icons-material';
 
 
 export default function FactionCard(props:{faction:Faction}) {
 
     const faction = props.faction;
 
-    const nameAbr = (name:string) => {
-        return name.split(/[\s,\-,\_]+/).map(n=>n.slice(0,1)).join('')
-    }
-
     return (
         <Card elevation={6} id={`faction-card-${faction.symbol}`}>
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: colors.red[500] }} aria-label="faction">
+            <Avatar sx={{ bgcolor: badgeColor(faction.symbol) }} aria-label="faction">
               {nameAbr(faction.name)}
             </Avatar>
           }
@@ -38,12 +40,16 @@ export default function FactionCard(props:{faction:Faction}) {
             {faction.description}
           </Typography>
         </CardContent>
-        <CardContent style={{justifyContent: 'space-evenly'}}>
+        <CardContent>
+          <Grid container>
             {faction.traits.map(trait=>{return (
+              <Grid item xs="auto">
                 <Tooltip title={trait.description}>
                     <Chip label={trait.name} color="primary" variant="outlined" />
                 </Tooltip>
+              </Grid>
             )})}
+          </Grid>
         </CardContent>
       </Card>
     );

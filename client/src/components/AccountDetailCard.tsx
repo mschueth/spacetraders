@@ -13,25 +13,28 @@ import {
 
 import { AccountDetails } from "../types/game";
 
+import { 
+  badgeColor, 
+  nameAbr, 
+  numberWithCommas,
+} from "../util/format"
+
+
 
 export default function AccountDetailCard(props:{Account:AccountDetails}) {
 
     const accountDetails = props.Account;
 
-    const nameAbr = (name:string) => {
-        return name.split(/[\s,\-,\_]+/).map(n=>n.slice(0,1)).join('')
-    }
-
     return (
         <Card elevation={6} id={`faction-card-${accountDetails.agent.symbol}`}>
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: colors.red[500] }} aria-label="faction">
+            <Avatar sx={{ bgcolor: badgeColor(accountDetails.agent.symbol) }} aria-label="faction">
               {nameAbr(accountDetails.agent.symbol)}
             </Avatar>
           }
           title={accountDetails.agent.symbol}
-          subheader={`last known credits: ${accountDetails.agent.credits}₡`}
+          subheader={`last known credits: ${numberWithCommas(accountDetails.agent.credits)}₡`}
         />
         <CardHeader
           title={accountDetails.faction.name}

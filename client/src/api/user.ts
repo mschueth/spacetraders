@@ -28,3 +28,28 @@ export async function createAccount(symbol: string, faction: string): Promise<Ap
       return undefined
     })
 }
+
+export async function loginAccount(token: string): Promise<ApiResponse|undefined>
+{
+  const config: AxiosRequestConfig = {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    data: {
+    },
+    url: `${API.BASE_URL}/my/agent`,
+  };
+  return await API.AXIOS_INSTANCE(config)
+    .then((ar:AxiosResponse)=> {return{...ar,error:false}})
+    .catch((ae:AxiosError)=>{
+      console.log(ae.message);
+      const ar = ae.response;
+      if(ar){
+        return {...ar,error:true}
+      }
+      return undefined
+    })
+}
+

@@ -1,11 +1,11 @@
 import { createTheme } from '@mui/material/styles';
 import * as colors from '@mui/material/colors';
 
-declare module '@mui/material/Paper' {
-  interface PaperPropsVariantOverrides {
-    MainContent: true;
-  }
-}
+// declare module '@mui/material/Button' {
+//   interface ButtonPropsVariantOverrides {
+//     SubmitForm: true;
+//   }
+// }
 
 
 // A custom theme for this app
@@ -28,6 +28,18 @@ const theme = createTheme({
         size: "small",
       }
     },
+    // MuiButton: {
+    //   variants:[
+    //     {
+    //       props: { 
+    //         variant: 'SubmitForm',
+    //         fullWidth:true,
+    //         sx:{ mt: 3, mb: 2 }
+    //       },
+    //       style:{},
+    //     }
+    //   ]
+    // }
   },
 });
 

@@ -3,13 +3,17 @@ import {
   Box,
   Container,
   Typography,
+  Link,
   Button,
   TextField,
   Tab,Tabs,
   MenuItem,
   Paper,
 }  from '@mui/material';
-import {createAccount} from "../api/user";
+import {
+  createAccount,
+  loginAccount,
+} from "../api/user";
 
 import TabPanel from "../components/TabPanel";
 import { Faction } from "../types/generated/faction";
@@ -17,6 +21,20 @@ import { AccountDetails } from "../types/game";
 import factions from '../data/factions.json';
 import FactionCard from '../components/FactionCard';
 import AccountDetailCard from "../components/AccountDetailCard";
+import { toValidAccountSymbol } from "../util/validate";
+
+import {
+
+  DangerousTwoTone,
+  ReportProblemTwoTone,
+
+  DeleteForeverTwoTone,
+  
+  KeyTwoTone,
+  SaveTwoTone,
+  CloudUploadTwoTone,
+
+} from '@mui/icons-material';
 
 function toFaction(f:any): Faction{return f};
 
@@ -27,6 +45,15 @@ function a11yProps(index: number) {
   };
 }
 
+function accountSort(a:AccountDetails,b:AccountDetails){
+  if(a.agent.symbol < b.agent.symbol){
+    return -1
+  }
+  if(a.agent.symbol > b.agent.symbol){
+    return 1
+  }
+  return 0
+}
 
 function GetAccountList():AccountDetails[]{
   let accountListStr = localStorage.getItem('accountList') || '[]';
@@ -37,6 +64,27 @@ function GetAccountList():AccountDetails[]{
   return accountList;
 }
 
+const sx = {
+  button: { 
+    mt: 2, 
+    mb: 2 
+  },
+  bodyText:{
+  //  alignItems: "left", 
+    padding: 2, 
+  //  width:"100%"
+  },
+  boxContent:{  
+    boxShadow: 3,
+    borderRadius: 2,
+    px: 4,
+    py: 2,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    elevation: 6,
+  },
+}
 
 export default function LoginPage() {
 
@@ -88,6 +136,8 @@ export default function LoginPage() {
     const symbol = data.get("symbol")?.toString();
     const faction = data.get("faction")?.toString();
 
+    //loginAccount
+
     //localStorage.setItem('apitoken',apitoken?.toString() || '');
   };
 
@@ -104,22 +154,16 @@ export default function LoginPage() {
       </Tabs>
       <TabPanel value={curTab} index={0}>
         {/* Create Account Start */}
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="sm">
           <Paper  elevation={3}>
             <Box
-              sx={{  
-                boxShadow: 3,
-                borderRadius: 2,
-                px: 4,
-                py: 6,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                elevation: 6,
-              }}
+              sx={sx.boxContent}
             >
               <Typography component="h1" variant="h5">
                 Create Account
+              </Typography>
+              <Typography component="h1" variant="body2" sx={sx.bodyText}>
+                Create a new account for the SpaceTraders game.
               </Typography>
               <Box component="form" onSubmit={handleCreateAccount} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -147,14 +191,15 @@ export default function LoginPage() {
                   type="text"
                   id="symbol"
                   autoComplete="callsymbol"
-                  defaultValue={callsymbol}
-                  onChange={(event)=>{setCallsymbol(event.target.value.toString())}}
+                  value={callsymbol}
+                  onChange={(event)=>{setCallsymbol(toValidAccountSymbol(event.target.value.toString()))}}
                   />
                 <Button
                   type="submit"
+                  startIcon={<SaveTwoTone />}
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={sx.button}
                 >
                   Create
                 </Button>
@@ -171,22 +216,17 @@ export default function LoginPage() {
       </TabPanel>
       <TabPanel value={curTab} index={1}>
         {/* Login Start */}
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="sm">
           <Paper  elevation={3}>
             <Box
-              sx={{  
-                boxShadow: 3,
-                borderRadius: 2,
-                px: 4,
-                py: 6,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                elevation: 6,
-              }}
+              sx={sx.boxContent}
             >
               <Typography component="h1" variant="h5">
                 Sign in
+              </Typography>
+              <Typography component="h1" variant="body2" sx={sx.bodyText}>
+                Add an existing account by adding the API Token to this site's localstorage. 
+                This site runs from your browser, and only sends data the official <Link href="https://spacetraders.io">spacetraders.io</Link> API.
               </Typography>
               <Box component="form" onSubmit={handleSelectAccount} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -201,9 +241,10 @@ export default function LoginPage() {
                 />
                 <Button
                   type="submit"
+                  startIcon={<KeyTwoTone />}
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={sx.button}
                 >
                   Sign In
                 </Button>
@@ -215,22 +256,16 @@ export default function LoginPage() {
       </TabPanel>
       <TabPanel value={curTab} index={2}>
         {/* Select Account Start */}
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="sm">
           <Paper  elevation={3}>
             <Box
-              sx={{  
-                boxShadow: 3,
-                borderRadius: 2,
-                px: 4,
-                py: 6,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                elevation: 6,
-              }}
+              sx={sx.boxContent}
             >
               <Typography component="h1" variant="h5">
                 Select Account
+              </Typography>
+              <Typography component="h1" variant="body2" sx={sx.bodyText}>
+                Load an account you have already used from this site. 
               </Typography>
               <Box component="form" onSubmit={handleSelectAccount} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -250,7 +285,7 @@ export default function LoginPage() {
                     }
                   }}
                   >
-                    {accountList.map((account) => (
+                    {accountList.sort(accountSort).map((account) => (
                       <MenuItem key={account.agent.accountId} value={account.agent.accountId} dense>
                         {account.agent.symbol} ({account.faction.name})
                       </MenuItem>
@@ -258,15 +293,26 @@ export default function LoginPage() {
                 </TextField>
                 <Button
                   type="submit"
+                  startIcon={<CloudUploadTwoTone />}
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={sx.button}
                 >
                   Select
                 </Button>
                 {
                   account?(<AccountDetailCard Account={account} />):(<div/>)
                 }
+                <Button
+                  type="submit"
+                  startIcon={<DeleteForeverTwoTone />}
+                  fullWidth
+                  color="error"
+                  variant="contained"
+                  sx={sx.button}
+                >
+                  Forget
+                </Button>
               </Box>
             </Box>
           </Paper>
