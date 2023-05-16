@@ -4,7 +4,7 @@ import {
   CardHeader,
   CardContent,
   Chip,
-  colors, 
+  Grid, 
   Typography,
   Tooltip,
   Avatar ,
@@ -26,15 +26,15 @@ export default function AccountDetailCard(props:{Account:AccountDetails}) {
     const accountDetails = props.Account;
 
     return (
-        <Card elevation={6} id={`faction-card-${accountDetails.agent.symbol}`}>
+        <Card elevation={6} key={`faction-card-${accountDetails.agent.symbol}`}>
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: badgeColor(accountDetails.agent.symbol) }} aria-label="faction">
+            <Avatar sx={{ bgcolor: badgeColor(accountDetails.agent.symbol), border: "2px solid", }} aria-label="faction" variant="rounded">
               {nameAbr(accountDetails.agent.symbol)}
             </Avatar>
           }
           title={accountDetails.agent.symbol}
-          subheader={`last known credits: ${numberWithCommas(accountDetails.agent.credits)}₡`}
+          subheader={`${numberWithCommas(accountDetails.agent.credits)}₡`}
         />
         <CardHeader
           title={accountDetails.faction.name}
@@ -45,12 +45,21 @@ export default function AccountDetailCard(props:{Account:AccountDetails}) {
             {accountDetails.faction.description}
           </Typography>
         </CardContent>
-        <CardContent style={{justifyContent: 'space-evenly'}}>
+        <CardContent sx={{width:'100%'}}>
+          <Grid container sx={{width:'100%'}} key={`faction-card-${accountDetails.agent.symbol}-grid`}>
             {accountDetails.faction.traits.map(trait=>{return (
+              <Grid item xs={true} style={{verticalAlign:"middle", textAlign:"center"}} key={`faction-card-${accountDetails.agent.symbol}-${trait.name}-grid`}>
                 <Tooltip title={trait.description}>
-                    <Chip label={trait.name} color="primary" variant="outlined" />
+                    <Chip 
+                       key={`faction-card-${accountDetails.agent.symbol}-${trait.name}-chip`}
+                      label={trait.name} 
+                      avatar={<Avatar alt="Natacha" sx={{ bgcolor: badgeColor(trait.name)}}>{nameAbr(trait.name)}</Avatar>}
+                      variant="outlined" 
+                      />
                 </Tooltip>
+              </Grid>
             )})}
+          </Grid>
         </CardContent>
       </Card>
     );

@@ -8,6 +8,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Paper, { PaperProps } from '@mui/material/Paper';
 import Draggable from 'react-draggable';
 
+import {
+    CancelTwoTone,
+    CheckCircleTwoTone,
+ } from '@mui/icons-material';
+
 function PaperComponent(props: PaperProps) {
   return (
     <Draggable
@@ -19,41 +24,52 @@ function PaperComponent(props: PaperProps) {
   );
 }
 
-export default function DraggableDialog(props:{title?:string, content?:string, children?:JSX.Element, onClose?:Function, onCancel?:Function}) {
-  const [open, setOpen] = React.useState(false);
+export default function DraggableDialog(props:{open:boolean, title?:string, content?:string, children?:JSX.Element|JSX.Element[], onClose?:Function, onCancel?:Function, onConfirm?:Function}) {
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  function onClose(){
+    if(props.onClose){
+        props.onClose();
+    }
+  }
+  function onCancel(){
+    if(props.onCancel){
+        props.onCancel();
+    }
+  }
+  function onConfirm(){
+    if(props.onConfirm){
+        props.onConfirm();
+    }
+  }
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const RenderChildren = ()=>{
+    return (
+        <div style={{marginTop:10}}>
+            {props.children}
+        </div>
+    )
+  }
 
   return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        {props.title || ''}
-      </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperComponent={PaperComponent}
-        aria-labelledby="draggable-dialog-title"
-      >
-        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-          Subscribe
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here. We
-            will send updates occasionally.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Ok</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+    open={props.open}
+    onClose={onClose}
+    PaperComponent={PaperComponent}
+    aria-labelledby="draggable-dialog-title"
+    >
+    <DialogTitle style={{ cursor: 'move', verticalAlign:"center"}} id="draggable-dialog-title">
+        {props.title||'Confirm'}
+    </DialogTitle>
+    <DialogContent>
+        <DialogContentText>
+            {props.content}
+        </DialogContentText>
+        <RenderChildren />
+    </DialogContent>
+    <DialogActions>
+        {props.onCancel?(<Button onClick={onCancel} fullWidth variant="contained" color="error" startIcon={<CancelTwoTone/>}>Cancel</Button>):(<div/>)}
+        {props.onConfirm?(<Button onClick={onConfirm} fullWidth variant="contained" color="success" startIcon={<CheckCircleTwoTone/>}>Confirm</Button>):(<div/>)}
+    </DialogActions>
+    </Dialog>
   );
 }

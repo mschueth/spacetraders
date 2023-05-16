@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link
+  redirect ,
 } from "react-router-dom";
 
 import { Game } from "./types/game"
@@ -21,8 +21,12 @@ export const API = {
 
 
 export default function App() {
+  const [apitoken, ] = React.useState<string>(localStorage.getItem('apitoken')||'')
 
-  const [UserAccount, setUserAccount] = useState<any>();
+  // if(!!!apitoken){
+  //   return redirect('/login')
+  // }
+
 
   return (
     <Router>

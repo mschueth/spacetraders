@@ -22,7 +22,7 @@ import factions from '../data/factions.json';
 import FactionCard from '../components/FactionCard';
 import AccountDetailCard from "../components/AccountDetailCard";
 import { toValidAccountSymbol } from "../util/validate";
-
+import DraggableDialog from "../components/DraggableDialog"
 import {
 
   DangerousTwoTone,
@@ -93,6 +93,7 @@ export default function LoginPage() {
   const [faction, setFaction] = React.useState<string>("COSMIC")
   const [callsymbol, setCallsymbol] = React.useState<string>("")
   const [account, setAccount] = React.useState<AccountDetails>(accountList[0])
+  const [toDeleteAccount, setToDeleteAccount] = React.useState<AccountDetails|undefined>()
   
   
   const AddAccountData = (data:any)=>{
@@ -108,6 +109,14 @@ export default function LoginPage() {
       localStorage.setItem('accountList',JSON.stringify(accountList) || '{}');
       setAccountList(accountList)
     }
+  }
+
+  const RemoveAccountData = (data:AccountDetails)=>{
+    let accountList = GetAccountList().filter(al=>al.token !== data.token)
+    localStorage.setItem('accountList',JSON.stringify(accountList) || '{}');
+    setAccount(accountList[0])
+    setAccountList(accountList)
+    setToDeleteAccount(undefined)
   }
 
   const handleCreateAccount = (event:any) => {
@@ -205,7 +214,7 @@ export default function LoginPage() {
                 </Button>
                 {
                   factions.filter(f=>f.symbol === faction).map(faction=>{
-                    return (<FactionCard faction={toFaction(faction)} />)
+                    return (<FactionCard faction={toFaction(faction)}  key={`factioncard-${faction.symbol}`}/>)
                   })
                 }
               </Box>
@@ -301,18 +310,36 @@ export default function LoginPage() {
                   Select
                 </Button>
                 {
-                  account?(<AccountDetailCard Account={account} />):(<div/>)
+                  account?(
+                    <div>
+                      <AccountDetailCard Account={account} />
+                      <Button
+                        type="submit"
+                        startIcon={<DeleteForeverTwoTone />}
+                        fullWidth
+                        color="error"
+                        variant="contained"
+                        sx={sx.button}
+                        onClick={()=>{setToDeleteAccount(account);console.log(account)}}
+                      >
+                        Forget
+                      </Button>
+                      {toDeleteAccount?(
+                        <DraggableDialog 
+                          title="Are You Sure?"
+                          content="Are you sure you want to forget the below account? You will need to re-add the API token to be able to use the account on this site again. Please store the below token somewhere safe if you wish to continue using it."
+                          open={true}
+                          onClose={()=>setToDeleteAccount(undefined)}
+                          onCancel={()=>setToDeleteAccount(undefined)}
+                          onConfirm={()=>RemoveAccountData(toDeleteAccount)}
+                          >
+                            <AccountDetailCard Account={toDeleteAccount} /> 
+                            <TextField label="API Token" value={toDeleteAccount.token} multiline fullWidth maxRows={4} style={{marginTop:10}} />
+                          </DraggableDialog>
+                      ):(<div/>)}
+                    </div>
+                  ):(<div/>)
                 }
-                <Button
-                  type="submit"
-                  startIcon={<DeleteForeverTwoTone />}
-                  fullWidth
-                  color="error"
-                  variant="contained"
-                  sx={sx.button}
-                >
-                  Forget
-                </Button>
               </Box>
             </Box>
           </Paper>

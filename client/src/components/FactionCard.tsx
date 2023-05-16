@@ -17,7 +17,6 @@ import {
 
 
 import { Faction } from "../types/generated/faction"
-import { WidthFull } from '@mui/icons-material';
 
 
 export default function FactionCard(props:{faction:Faction}) {
@@ -25,10 +24,10 @@ export default function FactionCard(props:{faction:Faction}) {
     const faction = props.faction;
 
     return (
-        <Card elevation={6} id={`faction-card-${faction.symbol}`}>
+        <Card elevation={6} key={`faction-card-${faction.symbol}`}>
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: badgeColor(faction.symbol) }} aria-label="faction">
+            <Avatar sx={{ bgcolor: badgeColor(faction.symbol), border: "2px solid",}} aria-label="faction" variant="rounded">
               {nameAbr(faction.name)}
             </Avatar>
           }
@@ -41,11 +40,16 @@ export default function FactionCard(props:{faction:Faction}) {
           </Typography>
         </CardContent>
         <CardContent>
-          <Grid container>
+          <Grid container key={`faction-card-${faction.symbol}-grid`}>
             {faction.traits.map(trait=>{return (
-              <Grid item xs="auto">
-                <Tooltip title={trait.description}>
-                    <Chip label={trait.name} color="primary" variant="outlined" />
+              <Grid item xs={true} style={{verticalAlign:"middle", textAlign:"center"}} key={`faction-card-${faction.symbol}-${trait.name}-grid`} >
+                <Tooltip title={trait.description} >
+                    <Chip 
+                      key={`faction-card-${faction.symbol}-${trait.name}-chip`} 
+                      label={trait.name} 
+                      avatar={<Avatar alt="Natacha" sx={{ bgcolor: badgeColor(trait.name)}}>{nameAbr(trait.name)}</Avatar>}
+                      variant="outlined" 
+                      />
                 </Tooltip>
               </Grid>
             )})}
