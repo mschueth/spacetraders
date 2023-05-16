@@ -6,6 +6,28 @@ import {
   Link,
 }  from '@mui/material';
 
+import {
+  RocketLaunchTwoTone,
+
+  BlurOnTwoTone,
+  PodcastsTwoTone,
+
+  DangerousTwoTone,
+  ReportProblemTwoTone,
+
+  DeleteForeverTwoTone,
+  DoneOutlineTwoTone,
+  
+  SettingsInputComponentTwoTone,
+  DisplaySettingsTwoTone,
+
+  FingerprintTwoTone,
+  KeyTwoTone,
+
+  NotificationImportantTwoTone,
+  NotificationsNoneTwoTone,
+
+} from '@mui/icons-material';
 
 export default function HomePage() {
   return (

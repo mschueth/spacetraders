@@ -27,15 +27,15 @@ export default function AlertErrorsHTTP(props:{ErrorMessageHTTP:ErrorMessageHTTP
             {keys.map((key)=>{
                 const data = props.ErrorMessageHTTP.error.data[key];
                 return (
-                    <Alert severity="error" key={`AlertErrorsHTTP-${key}`}>
-                        <AlertTitle>{key}</AlertTitle>
+                    <Alert severity="error" key={`AlertErrorsHTTP-${key}`} style={{margin:10}}>
+                        <AlertTitle>{key.toUpperCase()}</AlertTitle>
                         <List>
                             {data.map((d,i)=>(
-                                <ListItem>
-                                    <ListItemIcon style={{padding:0}}>
+                                <ListItem style={{padding:0, margin:0}}>
+                                    <ListItemIcon style={{padding:0, margin:0}}>
                                         <ReportProblemTwoTone color="error" />
                                     </ListItemIcon>
-                                    <ListItemText primary={d} key={`AlertErrorsHTTP-${key}-li-${i}`} style={{paddingLeft:0}} />
+                                    <ListItemText primary={d} key={`AlertErrorsHTTP-${key}-li-${i}`} style={{padding:0, margin:0}} />
                                 </ListItem>
                             ))}
                         </List>

@@ -29,16 +29,10 @@ import AlertErrorsHTTP from "../components/AlertErrorsHTTP";
 import { toValidAccountSymbol } from "../util/validate";
 import DraggableDialog from "../components/DraggableDialog"
 import {
-
-  DangerousTwoTone,
-  ReportProblemTwoTone,
-
   DeleteForeverTwoTone,
-  
   KeyTwoTone,
   SaveTwoTone,
   CloudUploadTwoTone,
-
 } from '@mui/icons-material';
 
 function toFaction(f:any): Faction{return f};
@@ -137,7 +131,7 @@ export default function LoginPage() {
     const faction = data.get("faction")?.toString();
 
     if(symbol && faction){
-      createAccount('!@#!$','')//symbol,faction)
+      createAccount(symbol,faction)
         .then((rsp)=>{
           if(rsp){
             console.log('createAccount:',rsp.status,rsp.statusText)
