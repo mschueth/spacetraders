@@ -8,6 +8,7 @@ import {
   TextField,
   Tab,Tabs,
   MenuItem,
+  Alert,AlertTitle,
   Paper,
 }  from '@mui/material';
 import {
@@ -17,10 +18,14 @@ import {
 
 import TabPanel from "../components/TabPanel";
 import { Faction } from "../types/generated/faction";
-import { AccountDetails } from "../types/game";
+import { 
+  AccountDetails,
+  ErrorMessageHTTP,
+} from "../types/game";
 import factions from '../data/factions.json';
 import FactionCard from '../components/FactionCard';
 import AccountDetailCard from "../components/AccountDetailCard";
+import AlertErrorsHTTP from "../components/AlertErrorsHTTP";
 import { toValidAccountSymbol } from "../util/validate";
 import DraggableDialog from "../components/DraggableDialog"
 import {
@@ -88,12 +93,15 @@ const sx = {
 
 export default function LoginPage() {
 
-  const [curTab, setCurTab] = React.useState<number>(0);
   const [accountList, setAccountList] = React.useState<AccountDetails[]>(GetAccountList())
   const [faction, setFaction] = React.useState<string>("COSMIC")
   const [callsymbol, setCallsymbol] = React.useState<string>("")
   const [account, setAccount] = React.useState<AccountDetails>(accountList[0])
   const [toDeleteAccount, setToDeleteAccount] = React.useState<AccountDetails|undefined>()
+
+  const [curTab, setCurTab] = React.useState<number>(accountList.length>0?2:0);
+
+  const [displayError, setDisplayError] = React.useState<ErrorMessageHTTP>()
   
   
   const AddAccountData = (data:any)=>{
@@ -117,6 +125,9 @@ export default function LoginPage() {
     setAccount(accountList[0])
     setAccountList(accountList)
     setToDeleteAccount(undefined)
+    if(accountList.length===0){
+      setCurTab(0);
+    }
   }
 
   const handleCreateAccount = (event:any) => {
@@ -126,16 +137,21 @@ export default function LoginPage() {
     const faction = data.get("faction")?.toString();
 
     if(symbol && faction){
-      createAccount(symbol,faction).then((rsp)=>{
-        if(rsp){
-          console.log('createAccount:',rsp.status,rsp.statusText)
-          if(rsp.data?.data?.token){
-            const data = rsp.data.data
-            localStorage.setItem('apitoken',data.token.toString() || '');
-            AddAccountData(data);
+      createAccount('!@#!$','')//symbol,faction)
+        .then((rsp)=>{
+          if(rsp){
+            console.log('createAccount:',rsp.status,rsp.statusText)
+            if(rsp.data?.data?.token){
+              const data = rsp.data.data
+              localStorage.setItem('apitoken',data.token.toString() || '');
+              AddAccountData(data);
+            }
+            if(rsp.data?.error){
+              const data = rsp.data
+              setDisplayError(data);
+            }
           }
-        }
-      });
+        })
     }
   };
 
@@ -156,10 +172,10 @@ export default function LoginPage() {
 
   return (
     <div>
-      <Tabs value={curTab} onChange={handleTabChange} centered aria-label="basic tabs example">
-        <Tab label="Create Account" {...a11yProps(0)} />
+      <Tabs value={curTab} onChange={handleTabChange} centered aria-label="LoginPageTabs" allowScrollButtonsMobile >
+        <Tab label="New User" {...a11yProps(0)} />
         <Tab label="Add API Token" {...a11yProps(1)} />
-        <Tab label="Select Account" {...a11yProps(2)} />
+        <Tab label="Login" {...a11yProps(2)} disabled={accountList.length===0}/>
       </Tabs>
       <TabPanel value={curTab} index={0}>
         {/* Create Account Start */}
@@ -346,6 +362,17 @@ export default function LoginPage() {
         </Container>
         {/* Select Account End */}
       </TabPanel>
+      {displayError?(
+        <DraggableDialog 
+          title="Error"
+          content={displayError.error?.message||"Error Creating An Account"}
+          open={true}
+          onClose={()=>setDisplayError(undefined)}
+          onConfirm={()=>setDisplayError(undefined)}
+          >
+            <AlertErrorsHTTP ErrorMessageHTTP={displayError} />
+          </DraggableDialog>
+      ):(<div/>)}
     </div>
   );
 }

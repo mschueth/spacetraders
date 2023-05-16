@@ -27,3 +27,13 @@ export type AccountDetails ={
     token:string,
     faction:Faction,
 }
+
+export type ErrorMessageHTTP ={
+    error:{
+        code: number,
+        data:{
+            [key:string]:string[]
+        }
+        message:string,
+    }
+}
