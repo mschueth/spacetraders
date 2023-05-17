@@ -29,6 +29,7 @@ export class BadgeColorHSL {
     l: number;
 
     constructor(name:string){
+        name ??= '';
         this.name = name;
         const hash = getHashOfString(name);
         this.h = normalizeHash(hash, hRange[0], hRange[1]);

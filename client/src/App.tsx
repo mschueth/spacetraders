@@ -4,10 +4,10 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  redirect ,
+  Navigate,
 } from "react-router-dom";
 
-import { Game } from "./types/gameType"
+import { GameData,GameDataKey } from "./types/gameType"
 import Axios from "axios";
 
 
@@ -22,23 +22,39 @@ export const API = {
   BASE_URL: process.env.BASE_URL || `https://api.spacetraders.io/v2/`
 }
 
+function LoadGameData(){
+  let gd:GameData = {
+    token:localStorage.getItem('token')||''
+  };
+  const keys:GameDataKey[] = ['agent','contract','faction','ship']
+  keys.forEach((key)=>{
+    try {
+      gd[key]=JSON.parse(localStorage.getItem(key)||'')
+    } catch (error) { console.log(`no data for ${key}`)}
+  });
+  gd.notifications=['hi','world']
+  return gd;
+}
 
 export default function App() {
-  const [apitoken, ] = React.useState<string>(localStorage.getItem('apitoken')||'')
+  const [gameData, setGameData ] = React.useState<GameData>(LoadGameData());
 
-  // if(!!!apitoken){
-  //   return redirect('/login')
-  // }
+  const ProtectedRoute = (props:{children: React.JSX.Element})=>{
+    if(!(gameData.token||'')){
+      return (<Navigate to="/login" />)
+    }
+    return props.children
+  }
 
 
   return (
     <Router>
-      <AppMenuBar />
+      <AppMenuBar gameData={gameData} />
       <Routes>
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/credits" element={<CreditsPage />} />
-        <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<ProtectedRoute><HomePage gameData={gameData} /></ProtectedRoute>} />
+        <Route path="/login" element={<LoginPage gameData={gameData} />} />
+        <Route path="/credits" element={<CreditsPage gameData={gameData} />} />
+        <Route path="/" element={<ProtectedRoute><HomePage gameData={gameData} /></ProtectedRoute>} />
       </Routes>
       {/* <Footer /> */}
     </Router>

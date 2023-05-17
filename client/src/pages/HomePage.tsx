@@ -6,6 +6,7 @@ import {
   Link,
   Paper,
 }  from '@mui/material';
+import { GameData } from '../types/gameType';
 
 import {
   RocketLaunchTwoTone,
@@ -56,7 +57,7 @@ const sx = {
     elevation: 6,
   },
 }
-export default function HomePage() {
+export default function HomePage(props:{gameData:GameData}) {
   
   const [account, setAccount] = React.useState<AccountDetails>({
     agent: JSON.parse(localStorage.getItem('agent')||'{}'),

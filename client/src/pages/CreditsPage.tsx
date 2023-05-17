@@ -14,6 +14,8 @@ import {
   ListItemText,
 }  from '@mui/material';
 
+import { GameData } from '../types/gameType';
+
 const sx = {
   button: { 
     mt: 2, 
@@ -39,7 +41,7 @@ const sx = {
   link:[],
 }
 
-export default function CreditsPage() {
+export default function CreditsPage(props:{gameData:GameData}) {
   return (
     <Container component="main" maxWidth="sm">
       <Paper  elevation={3}>

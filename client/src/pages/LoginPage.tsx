@@ -21,6 +21,7 @@ import { Faction } from "../types/generated/faction";
 import { 
   AccountDetails,
   ErrorMessageHTTP,
+  GameData,
 } from "../types/gameType";
 import factions from '../data/factions.json';
 import FactionCard from '../components/FactionCard';
@@ -85,7 +86,7 @@ const sx = {
   },
 }
 
-export default function LoginPage() {
+export default function LoginPage(props:{gameData:GameData}) {
 
   const [accountList, setAccountList] = React.useState<AccountDetails[]>(GetAccountList())
   const [faction, setFaction] = React.useState<string>("COSMIC")
@@ -142,7 +143,7 @@ export default function LoginPage() {
             console.log('createAccount:',rsp.status,rsp.statusText)
             if(rsp.data?.data?.token){
               const data = rsp.data.data
-              localStorage.setItem('apitoken',data.token.toString() || '');
+              localStorage.setItem('token',data.token.toString() || '');
               AddAccountData(data);
             }
             if(rsp.data?.error){
@@ -166,7 +167,7 @@ export default function LoginPage() {
 
     //loginAccount
 
-    //localStorage.setItem('apitoken',apitoken?.toString() || '');
+    //localStorage.setItem('token',token?.toString() || '');
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -261,11 +262,11 @@ export default function LoginPage() {
                   margin="normal"
                   required
                   fullWidth
-                  name="apitoken"
+                  name="token"
                   label="API Token"
                   type="password"
-                  id="apitoken"
-                  autoComplete="apitoken"
+                  id="token"
+                  autoComplete="token"
                 />
                 <Button
                   type="submit"

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from "react-router-dom";
 import {
     AppBar,
     Box,
@@ -9,8 +10,12 @@ import {
 }from '@mui/material'
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { GameData } from '../types/gameType';
 
-export default function AppMenuBar() {
+export default function AppMenuBar(props:{gameData:GameData}) {
+  let navigate = useNavigate(); 
+
+  const notifications = props.gameData.notifications || []
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -31,7 +36,7 @@ export default function AppMenuBar() {
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
+              <Badge badgeContent={notifications.length} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -40,7 +45,7 @@ export default function AppMenuBar() {
               edge="end"
               aria-label="account of current user"
               aria-haspopup="true"
-              onClick={()=>{}}
+              onClick={()=>{navigate("/login");}}
               color="inherit"
             >
               <AccountCircle />
