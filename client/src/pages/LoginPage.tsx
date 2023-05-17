@@ -14,19 +14,19 @@ import {
 import {
   createAccount,
   loginAccount,
-} from "../api/user";
+} from "../api/userAPI";
 
 import TabPanel from "../components/TabPanel";
 import { Faction } from "../types/generated/faction";
 import { 
   AccountDetails,
   ErrorMessageHTTP,
-} from "../types/game";
+} from "../types/gameType";
 import factions from '../data/factions.json';
 import FactionCard from '../components/FactionCard';
 import AccountDetailCard from "../components/AccountDetailCard";
 import AlertErrorsHTTP from "../components/AlertErrorsHTTP";
-import { toValidAccountSymbol } from "../util/validate";
+import { toValidAccountSymbol } from "../util/validateUtil";
 import DraggableDialog from "../components/DraggableDialog"
 import {
   DeleteForeverTwoTone,
@@ -95,21 +95,26 @@ export default function LoginPage() {
 
   const [curTab, setCurTab] = React.useState<number>(accountList.length>0?2:0);
 
-  const [displayError, setDisplayError] = React.useState<ErrorMessageHTTP>()
+  const [displayHTTPError, setDisplayHTTPError] = React.useState<ErrorMessageHTTP>()
+  const [displayNewUser, setDisplayNewUser] = React.useState<AccountDetails>()
+  
   
   
   const AddAccountData = (data:any)=>{
     if(data.agent){
       localStorage.setItem('agent',JSON.stringify(data.agent) || '{}');
       localStorage.setItem('faction',JSON.stringify(data.faction) || '{}');
+      localStorage.setItem('token',JSON.stringify(data.token) || '{}');
       let accountList = GetAccountList();
-      accountList.push({
+      const newUser:AccountDetails={
         agent:data.agent,
         token:data.token,
         faction:data.faction,
-      })
+      }
+      accountList.push(newUser);
       localStorage.setItem('accountList',JSON.stringify(accountList) || '{}');
       setAccountList(accountList)
+      setDisplayNewUser(newUser)
     }
   }
 
@@ -142,7 +147,7 @@ export default function LoginPage() {
             }
             if(rsp.data?.error){
               const data = rsp.data
-              setDisplayError(data);
+              setDisplayHTTPError(data);
             }
           }
         })
@@ -152,8 +157,12 @@ export default function LoginPage() {
   const handleSelectAccount = (event:any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const symbol = data.get("symbol")?.toString();
-    const faction = data.get("faction")?.toString();
+    const accountId = data.get("accountId")?.toString();
+    const account = accountList.find(a=>a.agent.accountId === accountId)
+
+    if(account){
+
+    }
 
     //loginAccount
 
@@ -356,15 +365,25 @@ export default function LoginPage() {
         </Container>
         {/* Select Account End */}
       </TabPanel>
-      {displayError?(
+      {displayHTTPError?(
         <DraggableDialog 
           title="Error"
-          content={displayError.error?.message||"Error Creating An Account"}
+          content={displayHTTPError.error?.message||"Error Creating An Account"}
           open={true}
-          onClose={()=>setDisplayError(undefined)}
-          onConfirm={()=>setDisplayError(undefined)}
+          onClose={()=>setDisplayHTTPError(undefined)}
+          onConfirm={()=>setDisplayHTTPError(undefined)}
           >
-            <AlertErrorsHTTP ErrorMessageHTTP={displayError} />
+            <AlertErrorsHTTP ErrorMessageHTTP={displayHTTPError} />
+          </DraggableDialog>
+      ):(<div/>)}
+      {displayNewUser?(
+        <DraggableDialog 
+          title="Welcome Space Commander"
+          open={true}
+          onClose={()=>setDisplayNewUser(undefined)}
+          onConfirm={()=>setDisplayNewUser(undefined)}
+          >
+            <AccountDetailCard Account={displayNewUser} /> 
           </DraggableDialog>
       ):(<div/>)}
     </div>

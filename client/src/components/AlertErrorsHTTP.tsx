@@ -13,7 +13,7 @@ import {
 
 import { 
     ErrorMessageHTTP,
-  } from "../types/game";
+  } from "../types/gameType";
 
 export default function AlertErrorsHTTP(props:{ErrorMessageHTTP:ErrorMessageHTTP}){
     const keys = Object.keys(props.ErrorMessageHTTP.error.data)

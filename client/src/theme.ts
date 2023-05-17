@@ -28,6 +28,16 @@ const theme = createTheme({
         size: "small",
       }
     },
+    MuiAppBar: {
+      styleOverrides: {
+        colorPrimary: {
+          backgroundColor:  colors.blue[900],
+          borderBottomStyle: "solid",
+          borderBottomColor:  colors.blue[600],
+          borderBottomWidth: "5",
+        }
+      }
+    }
     // MuiButton: {
     //   variants:[
     //     {

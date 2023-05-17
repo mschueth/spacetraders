@@ -3,7 +3,7 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { API } from "../App"
 
-import { Account } from "../types/game"
+import { Account } from "../types/gameType"
 
 
 type ApiResponse = AxiosResponse & {error:boolean}

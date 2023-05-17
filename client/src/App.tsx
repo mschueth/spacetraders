@@ -7,12 +7,15 @@ import {
   redirect ,
 } from "react-router-dom";
 
-import { Game } from "./types/game"
+import { Game } from "./types/gameType"
 import Axios from "axios";
 
 
-import HomePage from "./pages/Home";
-import LoginPage from "./pages/Login";
+import AppMenuBar from "./components/AppMenuBar"
+
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import CreditsPage from "./pages/CreditsPage";
 
 export const API = {
   AXIOS_INSTANCE: Axios.create(),
@@ -30,10 +33,11 @@ export default function App() {
 
   return (
     <Router>
-      {/* <Header /> */}
+      <AppMenuBar />
       <Routes>
         <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/credits" element={<CreditsPage />} />
         <Route path="/" element={<HomePage />} />
       </Routes>
       {/* <Footer /> */}

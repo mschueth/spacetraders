@@ -1,5 +1,5 @@
 
-import { BadgeColorHSL } from "./badgeColor";
+import { BadgeColorHSL } from "./badgeColorUtil";
 
 
 export function nameAbr(name:string){

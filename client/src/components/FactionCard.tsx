@@ -13,7 +13,7 @@ import {
 import { 
   badgeColor, 
   nameAbr, 
-} from "../util/format"
+} from "../util/formatUtil"
 
 
 import { Faction } from "../types/generated/faction"
