@@ -55,6 +55,12 @@ function accountSort(a:AccountDetails,b:AccountDetails){
   return 0
 }
 
+function defaultAccount(accountList:AccountDetails[],gameData:GameData){
+  let id = gameData.agent?.accountId ||''
+  let a = accountList.find(a=>a.agent.accountId === id)
+  return a || accountList.sort(accountSort)[0]
+}
+
 function GetAccountList():AccountDetails[]{
   let accountListStr = localStorage.getItem('accountList') || '[]';
   let accountList:AccountDetails[] = []
@@ -88,17 +94,16 @@ const sx = {
 
 export default function LoginPage(props:{gameData:GameData}) {
 
-  const [accountList, setAccountList] = React.useState<AccountDetails[]>(GetAccountList())
+  const [accountList, setAccountList] = React.useState<AccountDetails[]>(GetAccountList().sort(accountSort))
   const [faction, setFaction] = React.useState<string>("COSMIC")
   const [callsymbol, setCallsymbol] = React.useState<string>("")
-  const [account, setAccount] = React.useState<AccountDetails>(accountList[0])
+  const [account, setAccount] = React.useState<AccountDetails>(defaultAccount(accountList,props.gameData))
   const [toDeleteAccount, setToDeleteAccount] = React.useState<AccountDetails|undefined>()
 
   const [curTab, setCurTab] = React.useState<number>(accountList.length>0?2:0);
 
   const [displayHTTPError, setDisplayHTTPError] = React.useState<ErrorMessageHTTP>()
   const [displayNewUser, setDisplayNewUser] = React.useState<AccountDetails>()
-  
   
   
   const AddAccountData = (data:any)=>{
