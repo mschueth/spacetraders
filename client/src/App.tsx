@@ -14,6 +14,7 @@ import Axios from "axios";
 import AppMenuBar from "./components/AppMenuBar"
 
 import ParticleStarsBG from "./components/ParticleStarsBG";
+
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import CreditsPage from "./pages/CreditsPage";
@@ -27,7 +28,7 @@ function LoadGameData(){
   let gd:GameData = {
     token:localStorage.getItem('token')||''
   };
-  const keys:GameDataKey[] = ['agent','contracts','factions','ships']
+  const keys:GameDataKey[] = ['agent','contracts','factions','factionRep','ships','notifications']
   keys.forEach((key)=>{
     try {
       gd[key]=JSON.parse(localStorage.getItem(key)||'')

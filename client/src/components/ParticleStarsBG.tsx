@@ -3,9 +3,10 @@ import type { Container, Engine } from "tsparticles-engine";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 
-export default function ParticleStarsBG(props:{version?:1|2}) {
+export default function ParticleStarsBG(props:{version?:1|2,zIndex?:number}) {
 
     const version = props.version || 1;
+    const zIndex = props.zIndex || -10;
 
     function getBgColor(){
         const color = {
@@ -21,6 +22,14 @@ export default function ParticleStarsBG(props:{version?:1|2}) {
             2:["#F0FFFF","#FDEBD0","#F5B7B1","#FBFCFC","#F1948A","#FDFEFE"]
         }
         return color[version] || "#ffffff"
+    }
+    
+    function getStarSize(){
+        const color = {
+            1:{ min: 1, max: 2.5 },
+            2:{ min: 0.5, max: 1.5 }
+        }
+        return color[version] || 1
     }
 
     const particlesInit = React.useCallback(async (engine: Engine) => {
@@ -38,10 +47,12 @@ export default function ParticleStarsBG(props:{version?:1|2}) {
             options={{
                 fullScreen: {
                     enable: true,
-                    zIndex: -1
+                    zIndex: zIndex,
                 },
                 background: {
                     color: getBgColor(),
+                    opacity: 1,
+
                 },
                 fpsLimit:60,
                 interactivity:{
@@ -83,7 +94,7 @@ export default function ParticleStarsBG(props:{version?:1|2}) {
                         type: "circle"
                     },
                     size: {
-                        value: { min: 0.5, max: 1.5 },
+                        value: getStarSize(),
                     }
                 }
         }}/>

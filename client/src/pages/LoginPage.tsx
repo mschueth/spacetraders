@@ -9,6 +9,7 @@ import {
   Tab,Tabs,
   MenuItem,
   Alert,AlertTitle,
+  colors,
   Paper,
 }  from '@mui/material';
 import {
@@ -41,10 +42,16 @@ import {
 
 function toFaction(f:any): Faction{return f};
 
-function a11yProps(index: number) {
+function tabProps(index: number) {
   return {
+    key: `login-tab-${index}`,
     id: `login-tab-${index}`,
     'aria-controls': `login-tabpanel-${index}`,
+    sx:{
+      borderBottomWidth: 2,
+      borderBottomStyle: "groove",
+      borderBottomColor:  colors.grey[600],
+    }
   };
 }
 
@@ -121,7 +128,7 @@ export default function LoginPage(props:{gameData:GameData}) {
   const AddAccountData = (data:any)=>{
     if(data.agent){
       localStorage.setItem('agent',JSON.stringify(data.agent) || '{}');
-      localStorage.setItem('faction',JSON.stringify(data.faction) || '{}');
+      localStorage.setItem('factions',JSON.stringify([data.faction]) || '{}');
       localStorage.setItem('token',JSON.stringify(data.token) || '{}');
       let accountList = GetAccountList();
       const newUser:AccountDetails={
@@ -176,29 +183,16 @@ export default function LoginPage(props:{gameData:GameData}) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const accountId = data.get("accountId")?.toString();
-    const account = accountList.find(a=>a.agent.accountId === accountId)
+    const account = accountList.find((a)=>a.agent.accountId === accountId)
 
     if(account){
       loginAccount(account.token)
-        .then((rsp)=>{
-          if(rsp){
-            console.log('loginAccount:',rsp.status,rsp.statusText)
-            if(rsp.data?.data?.token){
-              const data = rsp.data.data
-              localStorage.setItem('token',account.token);
-              AddAccountData(data);
-            }
-            if(rsp.data?.error){
-              const data = rsp.data
-              setDisplayHTTPError(data);
-            }
+        .then((gameData)=>{
+          if(gameData){
+            console.log('loginAccount:',gameData)
           }
         })
     }
-
-    //loginAccount
-
-    //localStorage.setItem('token',token?.toString() || '');
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -209,10 +203,17 @@ export default function LoginPage(props:{gameData:GameData}) {
     <div>
       <Container component="main" maxWidth="sm" sx={{paddingTop: 2}}>
         <Paper  elevation={3}>
-          <Tabs value={curTab} onChange={handleTabChange} centered aria-label="LoginPageTabs" allowScrollButtonsMobile >
-            <Tab label="New User" {...a11yProps(0)} />
-            <Tab label="Add API Token" {...a11yProps(1)} />
-            <Tab label="Login" {...a11yProps(2)} disabled={accountList.length===0}/>
+          <Tabs 
+            value={curTab} 
+            onChange={handleTabChange} 
+            centered aria-label="LoginPageTabs" 
+            scrollButtons
+            allowScrollButtonsMobile 
+            variant="fullWidth"
+          >
+            <Tab label="New User" {...tabProps(0)} />
+            <Tab label="Add API Token" {...tabProps(1)} />
+            <Tab label="Login" {...tabProps(2)} disabled={accountList.length===0}/>
           </Tabs>
           <Box
             sx={sx.boxContent}
