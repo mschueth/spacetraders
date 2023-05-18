@@ -48,14 +48,23 @@ export default function CreditsPage(props:{gameData:GameData}) {
         <Box
           sx={sx.boxContent}
         >
-        <Typography component="h1" variant="h5">
-          Thanks for the backend API and game!
-        </Typography>
-        <Typography component="h1" variant="body2" sx={sx.bodyText}>
+          <Typography component="h1" variant="h5">
+            Thanks for the backend API and game!
+          </Typography>
+          <Typography component="h1" variant="body2" sx={sx.bodyText}>
+            <List sx={sx.list}>
+              <ListItemText sx={sx.listItemText}><Link href='https://spacetraders.io/' sx={sx.link}>spacetraders.io</Link></ListItemText>
+            </List>
+          </Typography>
+          <Typography component="h1" variant="h5">
+            Thanks for the engines!
+          </Typography>
+          <Typography component="h1" variant="body2" sx={sx.bodyText}>
           <List sx={sx.list}>
-            <ListItemText sx={sx.listItemText}><Link href='https://spacetraders.io/' sx={sx.link}>spacetraders.io</Link></ListItemText>
+            <ListItemText sx={sx.listItemText}><Link href='https://mui.com/' sx={sx.link}>MUI</Link></ListItemText>
+            <ListItemText sx={sx.listItemText}><Link href='https://particles.js.org/' sx={sx.link}>particles.js</Link></ListItemText>
           </List>
-        </Typography>
+          </Typography>
           <Typography component="h1" variant="h5">
             Thanks for the free images!
           </Typography>

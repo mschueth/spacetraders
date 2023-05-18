@@ -13,6 +13,7 @@ import Axios from "axios";
 
 import AppMenuBar from "./components/AppMenuBar"
 
+import ParticleStarsBG from "./components/ParticleStarsBG";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import CreditsPage from "./pages/CreditsPage";
@@ -57,6 +58,7 @@ export default function App() {
         <Route path="/" element={<ProtectedRoute><HomePage gameData={gameData} /></ProtectedRoute>} />
       </Routes>
       {/* <Footer /> */}
+      <ParticleStarsBG />
     </Router>
   );
 }
