@@ -209,14 +209,14 @@ export default function LoginPage(props:{gameData:GameData}) {
     <div>
       <Container component="main" maxWidth="sm" sx={{paddingTop: 2}}>
         <Paper  elevation={3}>
+          <Tabs value={curTab} onChange={handleTabChange} centered aria-label="LoginPageTabs" allowScrollButtonsMobile >
+            <Tab label="New User" {...a11yProps(0)} />
+            <Tab label="Add API Token" {...a11yProps(1)} />
+            <Tab label="Login" {...a11yProps(2)} disabled={accountList.length===0}/>
+          </Tabs>
           <Box
             sx={sx.boxContent}
           >
-            <Tabs value={curTab} onChange={handleTabChange} centered aria-label="LoginPageTabs" allowScrollButtonsMobile >
-              <Tab label="New User" {...a11yProps(0)} />
-              <Tab label="Add API Token" {...a11yProps(1)} />
-              <Tab label="Login" {...a11yProps(2)} disabled={accountList.length===0}/>
-            </Tabs>
             <TabPanel value={curTab} index={0}>
               {/* Create Account Start */}
               <Typography component="h1" variant="h5">

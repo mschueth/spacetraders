@@ -5,16 +5,10 @@ import { loadFull } from "tsparticles";
 
 export default function ParticleStarsBG(props:{}) {
     const particlesInit = React.useCallback(async (engine: Engine) => {
-        console.log(engine);
-
-        // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
-        // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-        // starting from v2 you can add only the features you need reducing the bundle size
         await loadFull(engine);
     }, []);
 
     const particlesLoaded = React.useCallback(async (container: Container | undefined) => {
-        await console.log(container);
     }, []);
 
     return (
@@ -28,7 +22,7 @@ export default function ParticleStarsBG(props:{}) {
                     zIndex: -1
                 },
                 background: {
-                    color: "#08113B"
+                    color: "#000311"
                 },
                 fpsLimit:60,
                 interactivity:{
@@ -38,7 +32,7 @@ export default function ParticleStarsBG(props:{}) {
                 },
                 particles:{
                     color: {
-                        value: "#F0FFFF"
+                        value: ["#F0FFFF","#FDEBD0","#F5B7B1","#FBFCFC","#F1948A","#FDFEFE"]
                     },
                     move: {
                         direction: "none",
@@ -47,16 +41,15 @@ export default function ParticleStarsBG(props:{}) {
                             default: "out",
                         },
                         random: false,
-                        speed: .1,
+                        speed: .05,
                         straight: false,
                     },
                     number: {
                         density:{
                             enable: true,
-                            area: 1000,
+                            area: 500,
                         },
-                        limit: 0,
-                        value: 500,
+                        value: 400,
                     },
                     opacity:{
                         animation: {
@@ -71,7 +64,7 @@ export default function ParticleStarsBG(props:{}) {
                         type: "circle"
                     },
                     size: {
-                        value: { min: 0.5, max: 2 },
+                        value: { min: 0.5, max: 1.5 },
                     }
                 }
         }}/>
