@@ -26,7 +26,7 @@ function LoadGameData(){
   let gd:GameData = {
     token:localStorage.getItem('token')||''
   };
-  const keys:GameDataKey[] = ['agent','contract','faction','ship']
+  const keys:GameDataKey[] = ['agent','contracts','factions','ships']
   keys.forEach((key)=>{
     try {
       gd[key]=JSON.parse(localStorage.getItem(key)||'')

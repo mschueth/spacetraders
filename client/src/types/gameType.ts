@@ -4,13 +4,14 @@ import { Contract } from './generated/contract';
 import { Faction } from './generated/faction';
 import { Ship } from './generated/ship';
 
-export type GameDataKey = 'token'|'agent'|'contract'|'faction'|'ship'|'notifications'
+export type GameDataKey = 'token'|'agent'|'contracts'|'factions'|'factionRep'|'ships'|'notifications'
 export type GameData = {
     token?:string;
     agent?:Agent,
-    contract?:Contract,
-    faction?: Faction;
-    ship?: Ship;
+    contracts?:Contract[],
+    factions?: Faction[];
+    factionRep?: {symbol: string, reputation: number}[]
+    ships?: Ship[];
     notifications?:string[];
 }
 

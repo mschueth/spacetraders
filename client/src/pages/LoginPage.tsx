@@ -15,6 +15,9 @@ import {
   createAccount,
   loginAccount,
 } from "../api/userAPI";
+import {
+  getFactions,
+} from "../api/gameAPI";
 
 import TabPanel from "../components/TabPanel";
 import { Faction } from "../types/generated/faction";
@@ -23,7 +26,7 @@ import {
   ErrorMessageHTTP,
   GameData,
 } from "../types/gameType";
-import factions from '../data/factions.json';
+
 import FactionCard from '../components/FactionCard';
 import AccountDetailCard from "../components/AccountDetailCard";
 import AlertErrorsHTTP from "../components/AlertErrorsHTTP";
@@ -93,6 +96,8 @@ const sx = {
 }
 
 export default function LoginPage(props:{gameData:GameData}) {
+  const [doneLoading, setDoneLoading] = React.useState<boolean>(false)
+  const [factions, setFactions] = React.useState<Faction[]>([])
 
   const [accountList, setAccountList] = React.useState<AccountDetails[]>(GetAccountList().sort(accountSort))
   const [faction, setFaction] = React.useState<string>("COSMIC")
@@ -104,7 +109,14 @@ export default function LoginPage(props:{gameData:GameData}) {
 
   const [displayHTTPError, setDisplayHTTPError] = React.useState<ErrorMessageHTTP>()
   const [displayNewUser, setDisplayNewUser] = React.useState<AccountDetails>()
+
   
+  React.useEffect(()=>{
+    if(doneLoading) return;
+    getFactions().then((f)=>setFactions(f))
+    setDoneLoading(true);
+
+  },[doneLoading,factions])
   
   const AddAccountData = (data:any)=>{
     if(data.agent){
@@ -167,7 +179,21 @@ export default function LoginPage(props:{gameData:GameData}) {
     const account = accountList.find(a=>a.agent.accountId === accountId)
 
     if(account){
-
+      loginAccount(account.token)
+        .then((rsp)=>{
+          if(rsp){
+            console.log('loginAccount:',rsp.status,rsp.statusText)
+            if(rsp.data?.data?.token){
+              const data = rsp.data.data
+              localStorage.setItem('token',account.token);
+              AddAccountData(data);
+            }
+            if(rsp.data?.error){
+              const data = rsp.data
+              setDisplayHTTPError(data);
+            }
+          }
+        })
     }
 
     //loginAccount
