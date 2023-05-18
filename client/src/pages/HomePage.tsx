@@ -67,7 +67,7 @@ export default function HomePage(props:{gameData:GameData}) {
   
 
   return (
-    <Container component="main" maxWidth="sm">
+    <Container component="main" maxWidth="sm" sx={{paddingTop: 2}}>
       <Paper  elevation={3}>
         <Box
           sx={sx.boxContent}

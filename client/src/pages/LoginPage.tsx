@@ -207,18 +207,18 @@ export default function LoginPage(props:{gameData:GameData}) {
 
   return (
     <div>
-      <Tabs value={curTab} onChange={handleTabChange} centered aria-label="LoginPageTabs" allowScrollButtonsMobile >
-        <Tab label="New User" {...a11yProps(0)} />
-        <Tab label="Add API Token" {...a11yProps(1)} />
-        <Tab label="Login" {...a11yProps(2)} disabled={accountList.length===0}/>
-      </Tabs>
-      <TabPanel value={curTab} index={0}>
-        {/* Create Account Start */}
-        <Container component="main" maxWidth="sm">
-          <Paper  elevation={3}>
-            <Box
-              sx={sx.boxContent}
-            >
+      <Container component="main" maxWidth="sm" sx={{paddingTop: 2}}>
+        <Paper  elevation={3}>
+          <Box
+            sx={sx.boxContent}
+          >
+            <Tabs value={curTab} onChange={handleTabChange} centered aria-label="LoginPageTabs" allowScrollButtonsMobile >
+              <Tab label="New User" {...a11yProps(0)} />
+              <Tab label="Add API Token" {...a11yProps(1)} />
+              <Tab label="Login" {...a11yProps(2)} disabled={accountList.length===0}/>
+            </Tabs>
+            <TabPanel value={curTab} index={0}>
+              {/* Create Account Start */}
               <Typography component="h1" variant="h5">
                 Create Account
               </Typography>
@@ -269,18 +269,10 @@ export default function LoginPage(props:{gameData:GameData}) {
                   })
                 }
               </Box>
-            </Box>
-          </Paper>
-        </Container>
-        {/* Create Account End */}
-      </TabPanel>
-      <TabPanel value={curTab} index={1}>
-        {/* Login Start */}
-        <Container component="main" maxWidth="sm">
-          <Paper  elevation={3}>
-            <Box
-              sx={sx.boxContent}
-            >
+              {/* Create Account End */}
+            </TabPanel>
+            <TabPanel value={curTab} index={1}>
+              {/* Login Start */}
               <Typography component="h1" variant="h5">
                 Sign in
               </Typography>
@@ -309,18 +301,10 @@ export default function LoginPage(props:{gameData:GameData}) {
                   Sign In
                 </Button>
               </Box>
-            </Box>
-          </Paper>
-        </Container>
-        {/* Login End */}
-      </TabPanel>
-      <TabPanel value={curTab} index={2}>
-        {/* Select Account Start */}
-        <Container component="main" maxWidth="sm">
-          <Paper  elevation={3}>
-            <Box
-              sx={sx.boxContent}
-            >
+              {/* Login End */}
+            </TabPanel>
+            <TabPanel value={curTab} index={2}>
+              {/* Select Account Start */}
               <Typography component="h1" variant="h5">
                 Select Account
               </Typography>
@@ -392,11 +376,11 @@ export default function LoginPage(props:{gameData:GameData}) {
                   ):(<div/>)
                 }
               </Box>
-            </Box>
-          </Paper>
-        </Container>
-        {/* Select Account End */}
-      </TabPanel>
+              {/* Select Account End */}
+            </TabPanel>
+          </Box>
+        </Paper>
+      </Container>      
       {displayHTTPError?(
         <DraggableDialog 
           title="Error"
