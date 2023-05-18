@@ -3,7 +3,26 @@ import type { Container, Engine } from "tsparticles-engine";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 
-export default function ParticleStarsBG(props:{}) {
+export default function ParticleStarsBG(props:{version?:1|2}) {
+
+    const version = props.version || 1;
+
+    function getBgColor(){
+        const color = {
+            1:"#08113B",
+            2:"#000311"
+        }
+        return color[version] || "#000000"
+    }
+
+    function getStarColor(){
+        const color = {
+            1:["#F0FFFF"],
+            2:["#F0FFFF","#FDEBD0","#F5B7B1","#FBFCFC","#F1948A","#FDFEFE"]
+        }
+        return color[version] || "#ffffff"
+    }
+
     const particlesInit = React.useCallback(async (engine: Engine) => {
         await loadFull(engine);
     }, []);
@@ -22,7 +41,7 @@ export default function ParticleStarsBG(props:{}) {
                     zIndex: -1
                 },
                 background: {
-                    color: "#000311"
+                    color: getBgColor(),
                 },
                 fpsLimit:60,
                 interactivity:{
@@ -32,7 +51,7 @@ export default function ParticleStarsBG(props:{}) {
                 },
                 particles:{
                     color: {
-                        value: ["#F0FFFF","#FDEBD0","#F5B7B1","#FBFCFC","#F1948A","#FDFEFE"]
+                        value: getStarColor(),
                     },
                     move: {
                         direction: "none",

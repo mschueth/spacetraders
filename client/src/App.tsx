@@ -58,7 +58,7 @@ export default function App() {
         <Route path="/" element={<ProtectedRoute><HomePage gameData={gameData} /></ProtectedRoute>} />
       </Routes>
       {/* <Footer /> */}
-      <ParticleStarsBG />
+      <ParticleStarsBG version={1} />
     </Router>
   );
 }
