@@ -35,9 +35,17 @@ async function apiGeneric(method:'GET'|'POST',endpoint:string,token: string,data
 }
 
 
-export async function createAccount(symbol: string, faction: string): Promise<ApiResponse|undefined>
+export async function createAccount(symbol: string, faction: string): Promise<{api?:ApiResponse,gd?:GameData}|undefined>
 {
-  return postRegister({symbol,faction})
+  const api  = await postRegister({symbol,faction})
+  console.log('createAccount: ',api?.status,' ',api?.statusText)
+  if(api?.data?.data?.token){
+    const token = api.data.data.token
+    localStorage.setItem('token',token);
+    const gd = await loginAccount(token)
+    return {api,gd}
+  }
+  return {api}
 }
 
 export async function loginAccount(token: string): Promise<GameData>

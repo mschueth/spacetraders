@@ -53,10 +53,10 @@ export default function App() {
     <Router>
       <AppMenuBar gameData={gameData} />
       <Routes>
-        <Route path="/home" element={<ProtectedRoute><HomePage gameData={gameData} /></ProtectedRoute>} />
-        <Route path="/login" element={<LoginPage gameData={gameData} />} />
-        <Route path="/credits" element={<CreditsPage gameData={gameData} />} />
-        <Route path="/" element={<ProtectedRoute><HomePage gameData={gameData} /></ProtectedRoute>} />
+        <Route path="/home" element={<ProtectedRoute><HomePage gameData={gameData} setGameData={setGameData}/></ProtectedRoute>} />
+        <Route path="/login" element={<LoginPage gameData={gameData} setGameData={setGameData} />} />
+        <Route path="/credits" element={<CreditsPage gameData={gameData} setGameData={setGameData} />} />
+        <Route path="/" element={<ProtectedRoute><HomePage gameData={gameData} setGameData={setGameData} /></ProtectedRoute>} />
       </Routes>
       {/* <Footer /> */}
       <ParticleStarsBG version={1} />

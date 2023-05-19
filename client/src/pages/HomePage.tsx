@@ -57,7 +57,7 @@ const sx = {
     elevation: 6,
   },
 }
-export default function HomePage(props:{gameData:GameData}) {
+export default function HomePage(props:{gameData:GameData, setGameData:(gd:GameData)=>void}) {
   
   const [account, setAccount] = React.useState<AccountDetails>({
     agent: JSON.parse(localStorage.getItem('agent')||'{}'),

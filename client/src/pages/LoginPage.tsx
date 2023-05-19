@@ -102,7 +102,7 @@ const sx = {
   },
 }
 
-export default function LoginPage(props:{gameData:GameData}) {
+export default function LoginPage(props:{gameData:GameData, setGameData:(gd:GameData)=>void}) {
   const [doneLoading, setDoneLoading] = React.useState<boolean>(false)
   const [factions, setFactions] = React.useState<Faction[]>([])
 
@@ -164,15 +164,17 @@ export default function LoginPage(props:{gameData:GameData}) {
       createAccount(symbol,faction)
         .then((rsp)=>{
           if(rsp){
-            console.log('createAccount:',rsp.status,rsp.statusText)
-            if(rsp.data?.data?.token){
-              const data = rsp.data.data
+            if(rsp.api?.data?.data?.token){
+              const data = rsp.api.data.data
               localStorage.setItem('token',data.token.toString() || '');
               AddAccountData(data);
             }
-            if(rsp.data?.error){
-              const data = rsp.data
+            if(rsp.api?.data?.error){
+              const data = rsp.api.data
               setDisplayHTTPError(data);
+            }
+            if(rsp.gd){
+              props.setGameData(rsp.gd)
             }
           }
         })
@@ -190,6 +192,23 @@ export default function LoginPage(props:{gameData:GameData}) {
         .then((gameData)=>{
           if(gameData){
             console.log('loginAccount:',gameData)
+            props.setGameData(gameData)
+          }
+        })
+    }
+  };
+
+  const handleAddToken = (event:any) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const token = data.get("token")?.toString();
+
+    if(token){
+      loginAccount(token)
+        .then((gameData)=>{
+          if(gameData){
+            console.log('loginAccount:',gameData)
+            props.setGameData(gameData)
           }
         })
     }
@@ -281,7 +300,7 @@ export default function LoginPage(props:{gameData:GameData}) {
                 Add an existing account by adding the API Token to this site's localstorage. 
                 This site runs from your browser, and only sends data the official <Link href="https://spacetraders.io">spacetraders.io</Link> API.
               </Typography>
-              <Box component="form" onSubmit={handleSelectAccount} noValidate sx={{ mt: 1 }}>
+              <Box component="form" onSubmit={handleAddToken} noValidate sx={{ mt: 1 }}>
                 <TextField
                   margin="normal"
                   required
