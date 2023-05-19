@@ -15,8 +15,6 @@ import {
 import {
   createAccount,
   loginAccount,
-} from "../api/userAPI";
-import {
   getFactions,
 } from "../api/gameAPI";
 
@@ -109,7 +107,7 @@ export default function LoginPage(props:{gameData:GameData, setGameData:(gd:Game
   const [accountList, setAccountList] = React.useState<AccountDetails[]>(GetAccountList().sort(accountSort))
   const [faction, setFaction] = React.useState<string>("COSMIC")
   const [callsymbol, setCallsymbol] = React.useState<string>("")
-  const [account, setAccount] = React.useState<AccountDetails>(defaultAccount(accountList,props.gameData))
+  const [account, setAccount] = React.useState<AccountDetails|undefined>(defaultAccount(accountList,props.gameData))
   const [toDeleteAccount, setToDeleteAccount] = React.useState<AccountDetails|undefined>()
 
   const [curTab, setCurTab] = React.useState<number>(accountList.length>0?2:0);
@@ -206,9 +204,15 @@ export default function LoginPage(props:{gameData:GameData, setGameData:(gd:Game
     if(token){
       loginAccount(token)
         .then((gameData)=>{
-          if(gameData){
+          if(gameData && gameData.agent && gameData.token && gameData.factions){
             console.log('loginAccount:',gameData)
             props.setGameData(gameData)
+            const data:AccountDetails = {
+              agent:gameData.agent,
+              token:gameData.token,
+              faction:gameData.factions[0],
+            }
+            AddAccountData(data);
           }
         })
     }
