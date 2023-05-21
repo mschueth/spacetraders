@@ -12,6 +12,7 @@ import {
   AccountDetails,
 } from "../types/gameType";
 import AccountDetailCard from "../components/AccountDetailCard";
+import ContractCard from '../components/ContractCard';
 
 const sx = {
   button: { 
@@ -38,8 +39,10 @@ export default function HomePage(props:{gameData:GameData, setGameData:(gd:GameD
   let agent = props.gameData.agent
   let token = props.gameData.token
   let faction = undefined;
-  if(props.gameData.factions && props.gameData.factions.length > 0){
-    faction = props.gameData.factions[0]
+  let contracts = props.gameData.contracts;
+  let factions = props.gameData.factions;
+  if(factions && factions.length > 0){
+    faction = factions[0]
   }
   
 
@@ -57,6 +60,13 @@ export default function HomePage(props:{gameData:GameData, setGameData:(gd:GameD
             You are logged into the game.
           </Typography>
           {(agent && token && faction)?(<AccountDetailCard Account={{agent,token,faction}} />):(<div/>)}
+          {(factions && contracts)?(
+            <Box sx={{ width: '100%', marginTop: 2 }}>
+            {
+              contracts.map(contract=>(<ContractCard contract={contract} factions={factions||[]} />))
+            }
+            </Box>
+            ):(<div/>)}
         </Box>
       </Paper>
     </Container>

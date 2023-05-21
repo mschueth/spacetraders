@@ -28,17 +28,6 @@ export default function AccountDetailCard(props:{Account:AccountDetails}) {
     return (
         <Card elevation={6} key={`faction-card-${accountDetails?.agent?.symbol}`}>
         <Grid container sx={{width:'100%'}} key={`faction-card-${accountDetails?.agent?.symbol}-grid-head`}>
-          <Grid item xs={true} style={{verticalAlign:"top"}} key={`faction-card-${accountDetails?.agent?.symbol}-${accountDetails?.faction?.symbol}-grid`}>
-          <CardHeader 
-            avatar={
-              <Avatar sx={{ bgcolor: badgeColor(accountDetails?.faction?.symbol), border: "2px solid",}} aria-label="faction" variant="rounded">
-                {nameAbr(accountDetails?.faction?.name)}
-              </Avatar>
-            }
-            title={accountDetails?.faction?.name}
-            subheader={accountDetails?.faction?.headquarters}
-          />
-          </Grid>
           <Grid item xs={true} style={{verticalAlign:"top"}} key={`faction-card-${accountDetails?.agent?.symbol}-grid`}>
             <CardHeader
               avatar={
@@ -49,6 +38,17 @@ export default function AccountDetailCard(props:{Account:AccountDetails}) {
               title={accountDetails?.agent?.symbol}
               subheader={`${numberWithCommas(accountDetails?.agent?.credits)}₡`}
             />
+          </Grid>
+          <Grid item xs={true} style={{verticalAlign:"top"}} key={`faction-card-${accountDetails?.agent?.symbol}-${accountDetails?.faction?.symbol}-grid`}>
+          <CardHeader 
+            avatar={
+              <Avatar sx={{ bgcolor: badgeColor(accountDetails?.faction?.symbol), border: "2px solid",}} aria-label="faction" variant="rounded">
+                {nameAbr(accountDetails?.faction?.name)}
+              </Avatar>
+            }
+            title={accountDetails?.faction?.name}
+            subheader={accountDetails?.faction?.headquarters}
+          />
           </Grid>
         </Grid>
         <CardContent>
