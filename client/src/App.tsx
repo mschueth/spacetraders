@@ -18,6 +18,7 @@ import ParticleStarsBG from "./components/ParticleStarsBG";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import CreditsPage from "./pages/CreditsPage";
+import AboutPage from "./pages/AboutPage";
 
 export const API = {
   AXIOS_INSTANCE: Axios.create(),
@@ -28,7 +29,7 @@ function LoadGameData(){
   let gd:GameData = {
     token:localStorage.getItem('token')||''
   };
-  const keys:GameDataKey[] = ['agent','contracts','factions','factionRep','ships','notifications']
+  const keys:GameDataKey[] = ['systems','agent','contracts','factions','factionRep','ships','notifications','info']
   keys.forEach((key)=>{
     try {
       gd[key]=JSON.parse(localStorage.getItem(key)||'')
@@ -56,6 +57,7 @@ export default function App() {
         <Route path="/home" element={<ProtectedRoute><HomePage gameData={gameData} setGameData={setGameData}/></ProtectedRoute>} />
         <Route path="/login" element={<LoginPage gameData={gameData} setGameData={setGameData} />} />
         <Route path="/credits" element={<CreditsPage gameData={gameData} setGameData={setGameData} />} />
+        <Route path="/about" element={<AboutPage gameData={gameData} setGameData={setGameData} />} />
         <Route path="/" element={<ProtectedRoute><HomePage gameData={gameData} setGameData={setGameData} /></ProtectedRoute>} />
       </Routes>
       {/* <Footer /> */}

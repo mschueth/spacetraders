@@ -39,21 +39,21 @@ export default function AccountDetailCard(props:{Account:AccountDetails}) {
             subheader={accountDetails?.faction?.headquarters}
           />
           </Grid>
-          <Grid item xs={true} style={{verticalAlign:"top"}} key={`faction-card-${accountDetails.agent.symbol}-grid`}>
+          <Grid item xs={true} style={{verticalAlign:"top"}} key={`faction-card-${accountDetails?.agent?.symbol}-grid`}>
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: badgeColor(accountDetails?.agent?.symbol), border: "2px solid", }} aria-label="faction" variant="rounded">
                   {nameAbr(accountDetails?.agent?.symbol)}
                 </Avatar>
               }
-              title={accountDetails.agent.symbol}
+              title={accountDetails?.agent?.symbol}
               subheader={`${numberWithCommas(accountDetails?.agent?.credits)}₡`}
             />
           </Grid>
         </Grid>
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            {accountDetails.faction.description}
+            {accountDetails?.faction?.description}
           </Typography>
         </CardContent>
         <CardContent sx={{width:'100%'}}>

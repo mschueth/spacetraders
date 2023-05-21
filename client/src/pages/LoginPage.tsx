@@ -54,10 +54,10 @@ function tabProps(index: number) {
 }
 
 function accountSort(a:AccountDetails,b:AccountDetails){
-  if(a.agent.symbol < b.agent.symbol){
+  if(a?.agent?.symbol < b?.agent?.symbol){
     return -1
   }
-  if(a.agent.symbol > b.agent.symbol){
+  if(a?.agent?.symbol > b?.agent?.symbol){
     return 1
   }
   return 0

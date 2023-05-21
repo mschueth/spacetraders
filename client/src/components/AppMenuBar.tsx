@@ -21,11 +21,13 @@ import { GameData } from '../types/gameType';
 const NavItems:{
     text:string,
     link:string,
+    requireToken:boolean,
     icon?:React.JSX.Element,
 }[]=[
-    {text:'Home',link:'/home'},
-    {text:'Login',link:'/login'},
-    {text:'Credits',link:'/credits'},
+    {text:'Home',link:'/home',requireToken:true},
+    {text:'Login',link:'/login',requireToken:false},
+    {text:'About',link:'/about',requireToken:false},
+    {text:'Credits',link:'/credits',requireToken:false},
 ]
 
 export default function AppMenuBar(props:{gameData:GameData}) {
@@ -78,7 +80,7 @@ export default function AppMenuBar(props:{gameData:GameData}) {
                     open={Boolean(anchorElNav)}
                     onClose={handleCloseNavMenu}
                     >
-                    {NavItems.map((nav) => (
+                    {NavItems.filter(i=>(!i.requireToken || props.gameData.token)).map((nav) => (
                         <MenuItem 
                             key={nav.text}
                             sx={{  minWidth:150 }} 

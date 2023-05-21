@@ -41,7 +41,7 @@ const sx = {
   link:[],
 }
 
-export default function CreditsPage(props:{gameData:GameData, setGameData:(gd:GameData)=>void}) {
+export default function AboutPage(props:{gameData:GameData, setGameData:(gd:GameData)=>void}) {
   return (
     <Container component="main" maxWidth="sm" sx={{paddingTop: 2}}>
       <Paper  elevation={3}>
