@@ -25,6 +25,7 @@ const NavItems:{
     icon?:React.JSX.Element,
 }[]=[
     {text:'Home',link:'/home',requireToken:true},
+    {text:'Systems',link:'/systems',requireToken:true},
     {text:'Login',link:'/login',requireToken:false},
     {text:'About',link:'/about',requireToken:false},
     {text:'Credits',link:'/credits',requireToken:false},

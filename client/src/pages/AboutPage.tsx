@@ -12,9 +12,14 @@ import {
   Alert,AlertTitle,
   Paper,
   ListItemText,
+  Grid,
 }  from '@mui/material';
 
 import { GameData } from '../types/gameType';
+import {
+  formatDateTime,
+} from "../util/formatUtil"
+
 
 const sx = {
   button: { 
@@ -38,42 +43,88 @@ const sx = {
   },
   list:{},
   listItemText:{},
-  link:[],
+  link:{},
+  gridContainer:{},
+  gridItem:{},
+  gridItem12:{ marginTop: 15},
+}
+
+function DisplayField(props:{label:string,value:string}){
+  return(
+    <TextField
+      label={props.label}
+      sx={{textAlign:"right"}}
+      disabled
+      value={props.value}
+      size="small"
+    />
+  )
 }
 
 export default function AboutPage(props:{gameData:GameData, setGameData:(gd:GameData)=>void}) {
+
+  const gd = props.gameData
   return (
     <Container component="main" maxWidth="sm" sx={{paddingTop: 2}}>
       <Paper  elevation={3}>
         <Box
           sx={sx.boxContent}
         >
-          <Typography component="h1" variant="h5">
-            Thanks for the backend API and game!
-          </Typography>
-          <Typography component="h1" variant="body2" sx={sx.bodyText}>
-            <List sx={sx.list}>
-              <ListItemText sx={sx.listItemText}><Link href='https://spacetraders.io/' sx={sx.link} target="_blank">spacetraders.io</Link></ListItemText>
-            </List>
-          </Typography>
-          <Typography component="h1" variant="h5">
-            Thanks for the engines!
-          </Typography>
-          <Typography component="h1" variant="body2" sx={sx.bodyText}>
-          <List sx={sx.list}>
-            <ListItemText sx={sx.listItemText}><Link href='https://mui.com/' sx={sx.link} target="_blank">MUI</Link></ListItemText>
-            <ListItemText sx={sx.listItemText}><Link href='https://particles.js.org/' sx={sx.link} target="_blank">particles.js</Link></ListItemText>
-          </List>
-          </Typography>
-          <Typography component="h1" variant="h5">
-            Thanks for the free images!
-          </Typography>
-          <Typography component="h1" variant="body2" sx={sx.bodyText}>
-          <List sx={sx.list}>
-            <ListItemText sx={sx.listItemText}><Link href='https://icons8.com/' sx={sx.link} target="_blank">icons8.com</Link></ListItemText>
-            <ListItemText sx={sx.listItemText}><Link href='https://freesvg.org/' sx={sx.link} target="_blank">freesvg.org</Link></ListItemText>
-          </List>
-          </Typography>
+          <Grid container>
+            <Grid item xs={12} style={sx.gridItem12}>
+              <Typography component="h1" variant="h4">
+                Space Traders
+              </Typography>
+              <Typography component="h1" variant="body2">
+                {gd.info?.description}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} style={sx.gridItem12}>
+              <Typography component="h1" variant="h4">
+                Status
+              </Typography>
+              <Typography component="h1" variant="body2">
+                {gd.info?.status || 'Unknown server status. Backend system may be down.'}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} style={sx.gridItem12}>
+              <Typography component="h1" variant="h4">
+                Next Game Restart
+              </Typography>
+              <Typography component="h1" variant="body2">
+                After a game restart, all progress is lost, and you must create a new account.
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid container sx={{marginTop: 1}}>
+            <Grid item xs={true} style={{verticalAlign:"middle", textAlign:"center"}}>
+              <DisplayField 
+                label="Frequency"
+                value= {gd.info?.serverResets?.frequency || ''}
+                /> 
+            </Grid>
+            <Grid item xs={true} style={{verticalAlign:"middle", textAlign:"center"}}>
+              <DisplayField 
+                label="Next"
+                value={formatDateTime(gd.info?.serverResets?.next || '') || 'Unknown'}
+                /> 
+            </Grid>
+            {((gd.info?.announcements?.length) || 0)>0?(
+              <Grid item xs={12} style={sx.gridItem12}>
+                <Typography component="h1" variant="h4">
+                  Announcements
+                </Typography>
+                {gd.info?.announcements.map(an=>{
+                  return (
+                    <Box sx={{ marginTop: 2}}>
+                      <Typography component="h1" variant="h5">{an.title}</Typography>
+                      <Typography component="h1" variant="body2">{an.body}</Typography>
+                    </Box>
+                  )
+                })}
+              </Grid>
+            ):(<div/>)}
+          </Grid>
         </Box>
       </Paper>
     </Container>

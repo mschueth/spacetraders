@@ -4,6 +4,7 @@ import { Contract } from './generated/contract';
 import { Faction } from './generated/faction';
 import { Ship } from './generated/ship'
 import { System } from './generated/system';
+import { Waypoint } from './generated/waypoint';
 
 export type GameDataKey = 'token'|'info'|'agent'|'contracts'|'factions'|'factionRep'|'ships'|'notifications'|'systems'
 export type GameData = {
@@ -16,6 +17,7 @@ export type GameData = {
     notifications?:string[],
     info?:GameInfo,
     systems?:System[],
+    waypoints?:Waypoint[],
 }
 
 export type Account = {

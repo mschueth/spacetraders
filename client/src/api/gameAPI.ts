@@ -13,18 +13,21 @@ import {
 
 type ApiResponse = AxiosResponse & {error:boolean}
 
-async function apiGeneric(method:'GET'|'POST',endpoint:string,token?: string,data?:Object): Promise<ApiResponse|undefined>
+async function apiGeneric(method:'GET'|'POST',endpoint:string,token?: string,data?:Object, limit?:number, page?:number): Promise<ApiResponse|undefined>
 {
   let url = `${API.BASE_URL}`
   if(endpoint){
     url = `${url}/${endpoint}`
   }
+  limit ??= 20;
+  page ??= 1;
   const config: AxiosRequestConfig = {
     method,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token||''}`,
-      'limit': 20
+      'limit': limit,
+      'page': page,
     },
     data,
     url,
@@ -43,11 +46,15 @@ async function apiGeneric(method:'GET'|'POST',endpoint:string,token?: string,dat
 
 
 export async function initializeApp(gd:GameData): Promise<GameData>{
-  const [rspGameInfo] = await Promise.all([
+  const [factions, rspGameInfo] = await Promise.all([
+      getFactions(),
       getGameInfo(),
   ]);
-  if(rspGameInfo?.data?.data && !rspGameInfo.error){
-    gd.info = rspGameInfo.data.data
+  if(rspGameInfo?.data && !rspGameInfo.error){
+    gd.info = rspGameInfo.data
+  }
+  if(factions && factions.length > 0){
+    gd.factions = factions
   }
   return gd
 }
@@ -98,19 +105,31 @@ export async function loginAccount(token: string): Promise<GameData>
     data.ships = rspMyShips.data.data
     systemSymbols = systemSymbols.concat((data.ships||[]).map(s=>s.nav.systemSymbol))
   }
-  if(gameInfo?.data?.data && !gameInfo.error){
-    data.info = gameInfo.data.data
+  if(gameInfo?.data && !gameInfo.error){
+    data.info = gameInfo.data
   }
 
   systemSymbols=uniqueStringArray(systemSymbols);
 
-  const rspMySystems = await Promise.all(
+  const rspSystems = await Promise.all(
     systemSymbols.map(sym=>getSystem(token,sym))
   );
+  
+  const rspWaypoints = await Promise.all(
+    systemSymbols.map(sym=>getWaypoints(token,sym))
+  );
+  
   data.systems=[]
-  rspMySystems.forEach(rspMySystem=>{
-    if(rspMySystem?.data?.data && !rspMySystem.error){
-      data.systems?.push(rspMySystem.data.data)
+  rspSystems.forEach(rspSystem=>{
+    if(rspSystem?.data?.data && !rspSystem.error){
+      data.systems = data.systems?.concat(rspSystem.data.data)
+    }
+  })
+  
+  data.waypoints=[]
+  rspWaypoints.forEach(rspWaypoint=>{
+    if(rspWaypoint?.data?.data && !rspWaypoint.error){
+      data.waypoints = data.waypoints?.concat(rspWaypoint.data.data)
     }
   })
 
@@ -121,9 +140,10 @@ export async function loginAccount(token: string): Promise<GameData>
   localStorage.setItem('factions',JSON.stringify(data.factions) || '[]');
   localStorage.setItem('contracts',JSON.stringify(data.contracts) || '[]');
   localStorage.setItem('ships',JSON.stringify(data.ships) || '[]');
-  localStorage.setItem('info',JSON.stringify(data.info) || '[]');
+  localStorage.setItem('info',JSON.stringify(data.info) || '{}');
   localStorage.setItem('systemSymbols',JSON.stringify(systemSymbols) || '[]');
   localStorage.setItem('systems',JSON.stringify(data.systems) || '[]');
+  localStorage.setItem('waypoints',JSON.stringify(data.waypoints) || '[]');
 
   
   return data
@@ -174,7 +194,17 @@ export async function getMyShipCargo(token: string, symbol?:string): Promise<Api
     return(apiGeneric('GET',`my/ships/${symbol}/cargo`,token))
 }
 
+export async function getSystems(token: string, limit:number, page:number): Promise<ApiResponse|undefined>
+{
+    return(apiGeneric('GET',`systems`,token,{},limit,page))
+}
+
 export async function getSystem(token: string, symbol?:string): Promise<ApiResponse|undefined>
 {
     return(apiGeneric('GET',`systems/${symbol}`,token))
+}
+
+export async function getWaypoints(token: string, symbol?:string): Promise<ApiResponse|undefined>
+{
+    return(apiGeneric('GET',`systems/${symbol}/waypoints`,token))
 }
