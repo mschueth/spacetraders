@@ -20,6 +20,7 @@ import SystemsPage from "./pages/SystemsPage";
 import LoginPage from "./pages/LoginPage";
 import CreditsPage from "./pages/CreditsPage";
 import AboutPage from "./pages/AboutPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 export const API = {
   AXIOS_INSTANCE: Axios.create(),
@@ -55,12 +56,13 @@ export default function App() {
     <Router>
       <AppMenuBar gameData={gameData} />
       <Routes>
-        <Route path="/home" element={<ProtectedRoute><HomePage gameData={gameData} setGameData={setGameData}/></ProtectedRoute>} />
-        <Route path="/systems" element={<ProtectedRoute><SystemsPage gameData={gameData} setGameData={setGameData}/></ProtectedRoute>} />
-        <Route path="/login" element={<LoginPage gameData={gameData} setGameData={setGameData} />} />
-        <Route path="/credits" element={<CreditsPage gameData={gameData} setGameData={setGameData} />} />
-        <Route path="/about" element={<AboutPage gameData={gameData} setGameData={setGameData} />} />
-        <Route path="/" element={<ProtectedRoute><HomePage gameData={gameData} setGameData={setGameData} /></ProtectedRoute>} />
+        <Route path="home" element={<ProtectedRoute><HomePage gameData={gameData} setGameData={setGameData}/></ProtectedRoute>} />
+        <Route path="systems" element={<ProtectedRoute><SystemsPage gameData={gameData} setGameData={setGameData}/></ProtectedRoute>} />
+        <Route path="login" element={<LoginPage gameData={gameData} setGameData={setGameData} />} />
+        <Route path="credits" element={<CreditsPage gameData={gameData} setGameData={setGameData} />} />
+        <Route path="about" element={<AboutPage gameData={gameData} setGameData={setGameData} />} />
+        <Route path="" element={<ProtectedRoute><HomePage gameData={gameData} setGameData={setGameData} /></ProtectedRoute>} />
+        <Route path='*' element={<NotFoundPage />}/>
       </Routes>
       {/* <Footer /> */}
       <ParticleStarsBG version={1} />

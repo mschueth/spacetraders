@@ -52,7 +52,7 @@ export default function AppMenuBar(props:{gameData:GameData}) {
                 <Chip
                     key={`appbar-nav-chip`}
                     label="SpaceTraders UI" 
-                    avatar={<img src="img/logo.png" alt="Logo" />}
+                    avatar={<img src={process.env.PUBLIC_URL + "/img/logo.png"} alt="Logo" />}
                     variant="filled" 
                     size="medium"
                     sx={{

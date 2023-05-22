@@ -27,11 +27,11 @@ export function uniqueStringArray(a:string[]) {
 }
 
 export function toFirstCharUpper(str:string) {
-    return str.charAt(0).toUpperCase() + str.slice(1)
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
 }
 
 export function toWordFirstCharUpper(str:string) {
-    return str.split(/[\s]/).map(s=>toFirstCharUpper(s)).join(' ')
+    return str.split(/[\s\_\-]/).map(s=>toFirstCharUpper(s)).join(' ')
 }
 
 export function formatDate(dt:Date|string,sep?:string){

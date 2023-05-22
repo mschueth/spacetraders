@@ -3,16 +3,26 @@ import {
   Box,
   Container,
   Typography,
+  CardHeader,
+  CardContent,
+  Avatar, 
   Link,
   Paper,
 }  from '@mui/material';
 import { GameData } from '../types/gameType';
 
+
 import { 
-  AccountDetails,
-} from "../types/gameType";
-import AccountDetailCard from "../components/AccountDetailCard";
-import ContractCard from '../components/ContractCard';
+  badgeColor, 
+  nameAbr, 
+  toWordFirstCharUpper,
+} from "../util/formatUtil"
+
+
+import { Waypoint } from "../types/generated/waypoint"
+import { System } from "../types/generated/system"
+
+import WaypointMapCard from '../components/WaypointMapCard';
 
 const sx = {
   button: { 
@@ -33,19 +43,21 @@ const sx = {
     flexDirection: "column",
     alignItems: "center",
     elevation: 6,
+    width: '100%',
   },
 }
 export default function SystemsPage(props:{gameData:GameData, setGameData:(gd:GameData)=>void}) {
-  let agent = props.gameData.agent
-  let token = props.gameData.token
-  let faction = undefined;
-  let contracts = props.gameData.contracts;
-  let factions = props.gameData.factions;
-  if(factions && factions.length > 0){
-    faction = factions[0]
-  }
-  
+  let system: System|undefined;
+  let waypoints:Waypoint[]=[]
 
+  if(props.gameData.systems){
+    system=props.gameData.systems[0]
+  }
+  if(system){
+    waypoints = waypoints.filter(wp=>wp.systemSymbol === system?.symbol);
+  }
+  console.log(system);
+  console.log(waypoints);
 
   return (
     <Container component="main" maxWidth="sm" sx={{paddingTop: 2}}>
@@ -53,20 +65,18 @@ export default function SystemsPage(props:{gameData:GameData, setGameData:(gd:Ga
         <Box
           sx={sx.boxContent}
         >
-          <Typography component="h1" variant="h5">
-            Home Page
-          </Typography>
-          <Typography component="h1" variant="body2" sx={sx.bodyText}>
-            You are logged into the game.
-          </Typography>
-          {(agent && token && faction)?(<AccountDetailCard Account={{agent,token,faction}} />):(<div/>)}
-          {(factions && contracts)?(
-            <Box sx={{ width: '100%', marginTop: 2 }}>
-            {
-              contracts.map(contract=>(<ContractCard contract={contract} factions={factions||[]} />))
+          <CardHeader
+            avatar={
+              <Avatar sx={{ bgcolor: badgeColor(system?.symbol), border: "2px solid",}} aria-label="systemSymbol" variant="rounded">
+                {nameAbr(system?.symbol)}
+              </Avatar>
             }
-            </Box>
-            ):(<div/>)}
+            title={system?.symbol}
+            subheader={toWordFirstCharUpper(system?.type||'Unknown')}
+          />
+          {system?(
+            <WaypointMapCard waypoints={props.gameData.waypoints || []} system={system} />
+          ):(<Box />)}
         </Box>
       </Paper>
     </Container>
