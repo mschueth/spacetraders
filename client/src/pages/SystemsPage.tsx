@@ -65,15 +65,6 @@ export default function SystemsPage(props:{gameData:GameData, setGameData:(gd:Ga
         <Box
           sx={sx.boxContent}
         >
-          <CardHeader
-            avatar={
-              <Avatar sx={{ bgcolor: badgeColor(system?.symbol), border: "2px solid",}} aria-label="systemSymbol" variant="rounded">
-                {nameAbr(system?.symbol)}
-              </Avatar>
-            }
-            title={system?.symbol}
-            subheader={toWordFirstCharUpper(system?.type||'Unknown')}
-          />
           {system?(
             <WaypointMapCard waypoints={props.gameData.waypoints || []} system={system} />
           ):(<Box />)}

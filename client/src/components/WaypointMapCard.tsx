@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {
-  Card,
   CardHeader,
-  CardContent,
   Avatar, 
   Tooltip,
   Box,
@@ -23,7 +21,7 @@ const sx = {
     display: 'flex',
     width: '50px',
     height: '50px',
-    background:'linear-gradient(rgba(0,0,0,.75),transparent)',
+    background:'linear-gradient(127deg,rgba(0,0,0,.75),transparent)',
     backgroundColor: 'green',
     borderRadius: '50%',
     boxShadow: 'inset 0 0 20px #000',
@@ -34,79 +32,121 @@ const sx = {
     margin:'auto',
   },
 };
-
-function splitInHalf(str:string){
-  let i = str.length / 2
-  return [str.substring(0,i),str.substring(i)].join(' ')
+type Boundry = {
+  x:{
+    min:number
+    max:number
+    offset:number
+    diff:number
+  },
+  y:{
+    min:number
+    max:number
+    offset:number
+    diff:number
+  }
 }
 
+function getBoundry(waypoints:Waypoint[]): Boundry{
+  var boundry:Boundry|undefined = undefined;
+  waypoints.forEach(wp=>{
+    if(!!boundry){
+      if(boundry.x.min > wp.x){
+        boundry.x.min = wp.x
+        boundry.x.offset=(wp.x<0)?Math.abs(wp.x):0
+        boundry.x.diff = boundry.x.max - boundry.x.min
+      }
+      if(boundry.x.max < wp.x){
+        boundry.x.max = wp.x
+        boundry.x.diff = boundry.x.max - boundry.x.min
+      }
+      if(boundry.y.min > wp.y){
+        boundry.y.min = wp.y
+        boundry.y.offset=(wp.y<0)?Math.abs(wp.y):0
+        boundry.y.diff = boundry.y.max - boundry.y.min
+      }
+      if(boundry.y.max < wp.y){
+        boundry.y.max = wp.y
+        boundry.y.diff = boundry.y.max - boundry.y.min
+      }
+    }else{
+      boundry={
+        x:{
+          min:wp.x,
+          max:wp.x,
+          offset:(wp.x<0)?Math.abs(wp.x):0,
+          diff:0,
+        },
+        y:{
+          min:wp.y,
+          max:wp.y,
+          offset:(wp.y<0)?Math.abs(wp.y):0,
+          diff:0,
+        }
+      }
+    }
+  })
+  return boundry || {x:{min:0,max:0,offset:0,diff:0},y:{min:0,max:0,offset:0,diff:0}}
+}
+
+
 export default function WaypointMapCard(props:{waypoints:Waypoint[], system:System}) {
+  const waypoints = props.waypoints;
+  const system = props.system;
+  const ref = React.useRef<HTMLInputElement>(null);
+  const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
+  const [waypointSymbol, setWaypointSymbol] = React.useState<string>();
 
-    const waypoints = props.waypoints;
-    const system = props.system;
-    let boundry:{
-      x:{
-        min:number
-        max:number
-        offset:number
-      },
-      y:{
-        min:number
-        max:number
-        offset:number
-      }
-    }|undefined = undefined;
+  React.useEffect(() => {
+    if (ref.current) {
+      setDimensions({
+        width: ref.current.offsetWidth,
+        height: ref.current.offsetHeight
+      });
+    }
+  }, [waypointSymbol]);
 
-    waypoints.forEach(wp=>{
-      if(!!boundry){
-        if(boundry.x.min > wp.x){
-          boundry.x.min = wp.x
-          boundry.x.offset=(wp.x<0)?Math.abs(wp.x):0
-        }
-        if(boundry.x.max < wp.x){
-          boundry.x.max = wp.x
-        }
-        if(boundry.y.min > wp.y){
-          boundry.y.min = wp.y
-          boundry.y.offset=(wp.y<0)?Math.abs(wp.y):0
-        }
-        if(boundry.y.max < wp.y){
-          boundry.y.max = wp.y
-        }
-      }else{
-        boundry={
-          x:{
-            min:wp.x,
-            max:wp.x,
-            offset:(wp.x<0)?Math.abs(wp.x):0,
-          },
-          y:{
-            min:wp.y,
-            max:wp.y,
-            offset:(wp.y<0)?Math.abs(wp.y):0,
+
+
+  const boundry = getBoundry(waypoints);
+  const factor = dimensions.width / Math.floor((Math.abs(boundry?.x?.diff || 100 )));
+
+  return (
+    <Box key={`faction-card-${system.symbol}`} sx={{ width: '100%',}}>
+      <Box key={`faction-card-${system.symbol}-map`} sx={{ width: '100%', position:'relative'}}>
+        <CardHeader
+          sx={{margin:0, padding:0}}
+          ref={ref}
+          avatar={
+            <Avatar sx={{ bgcolor: badgeColor(system?.symbol), border: "2px solid",}} aria-label="systemSymbol" variant="rounded">
+              {nameAbr(system?.symbol)}
+            </Avatar>
           }
-        }
-      }
-    })
-
-    console.log(boundry)
-
-    return (
-        <Box key={`faction-card-${system.symbol}`} sx={{ width: '100%', position:'relative'}}>
-          {waypoints.map(wp=>{
-            function wpName(name:string){
-              return (name.split('-').slice(-1))[0];
-            }
-            const wpSx = {
-              ...sx.circle,
-              backgroundColor: badgeColor(wpName(wp.type)),
-              left: `${((wp.x)+(boundry?.x.offset||0))*5}px`,
-              top: `${50+((wp.y)+(boundry?.y.offset||0))*5}px`,
-            }
-            return (
-              <Box sx={wpSx}><Box fontSize="small" sx={sx.text}>{wpName(wp.symbol)}</Box></Box>
-            )
-          })}
+          title={system?.symbol}
+          subheader={toWordFirstCharUpper(system?.type||'Unknown')}
+        />
+        {waypoints.map(wp=>{
+          function wpName(name:string){
+            return (name.split('-').slice(-1))[0];
+          }
+          const selected = waypointSymbol === wp.symbol;
+          const wpSx = {
+            ...sx.circle,
+            backgroundColor: badgeColor(wpName(wp.type)),
+            width: `${factor*10}px`,
+            height: `${factor*10}px`,
+            left: `${((wp.x)+(boundry?.x.offset||0)-5)*factor}px`,
+            top: `${dimensions.height + 80+((wp.y)+(boundry?.y.offset||0)-5)*factor}px`,
+            boxShadow: `inset 0 0 ${factor*2}px #000`,
+            border: selected?`${factor/2}px solid #fff`:'1px solid #000',
+          }
+          return (
+            <Tooltip title={toWordFirstCharUpper(wp.type)+' '+wpName(wp.symbol)}>
+              <Box sx={wpSx} onClick={()=>{setWaypointSymbol(wp.symbol)}}></Box>
+            </Tooltip>
+          )
+        })}
       </Box>
-    );
-  }
+    </Box>
+  );
+}
