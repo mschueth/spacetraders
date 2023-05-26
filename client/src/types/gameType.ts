@@ -75,3 +75,15 @@ export type GameInfo = {
         url: string,
     }[]
 }
+
+export type WaypointTypeProps={
+    zindex: number,
+    size:{
+        factor:number
+    },
+    color:{
+        base:string[],
+        shadow:string[],
+        highlight:string[],
+    }
+}

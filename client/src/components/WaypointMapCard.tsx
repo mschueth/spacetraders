@@ -12,17 +12,19 @@ import {
   toWordFirstCharUpper,
 } from "../util/formatUtil"
 
+import {getWaypointProps} from "../core/generateGameData"
 
 import { Waypoint } from "../types/generated/waypoint"
 import { System } from "../types/generated/system"
+import WaypointInfoCard from "../components/WaypointInfoCard";
 
 const sx = {
   circle: {
     display: 'flex',
     width: '50px',
     height: '50px',
-    background:'linear-gradient(127deg,rgba(0,0,0,.75),transparent)',
-    backgroundColor: 'green',
+    background:'linear-gradient(127deg,rgba(0,0,0,.75),transparent,transparent),linear-gradient(336deg, rgba(0,0,255,.75), transparent 70%)',
+    backgroundColor: 'white',
     borderRadius: '50%',
     boxShadow: 'inset 0 0 20px #000',
     border: '1px solid #000',
@@ -47,6 +49,9 @@ type Boundry = {
   }
 }
 
+function wpName(name:string){
+  return (name.split('-').slice(-1))[0];
+}
 function getBoundry(waypoints:Waypoint[]): Boundry{
   var boundry:Boundry|undefined = undefined;
   waypoints.forEach(wp=>{
@@ -111,6 +116,18 @@ export default function WaypointMapCard(props:{waypoints:Waypoint[], system:Syst
   const boundry = getBoundry(waypoints);
   const factor = dimensions.width / Math.floor((Math.abs(boundry?.x?.diff || 100 )));
 
+  const starSx = {
+    ...sx.circle,
+    width: `${factor*10}px`,
+    height: `${factor*10}px`,
+    left: `${((boundry?.x.diff||0)/2)*factor - factor}px`,
+    top: `${dimensions.height + 80+((boundry?.y.diff||0)/2)*factor - factor}px`,
+    boxShadow: `inset 0 0 ${factor*2}px #000`,
+    border: '1px solid #000',
+    backgroundColor: (system?.type||'').split('_')[0],
+    background:'linear-gradient(127deg,rgba(250,250,250,.75),transparent,transparent),linear-gradient(336deg, rgba(255, 234, 0,.75),transparent, transparent 70%)',
+  }
+
   return (
     <Box key={`faction-card-${system.symbol}`} sx={{ width: '100%',}}>
       <Box key={`faction-card-${system.symbol}-map`} sx={{ width: '100%', position:'relative'}}>
@@ -125,20 +142,22 @@ export default function WaypointMapCard(props:{waypoints:Waypoint[], system:Syst
           title={system?.symbol}
           subheader={toWordFirstCharUpper(system?.type||'Unknown')}
         />
+        <Tooltip title={toWordFirstCharUpper(system.type)+' '+wpName(system.symbol)}>
+          <Box sx={starSx}></Box>
+        </Tooltip>
         {waypoints.map(wp=>{
-          function wpName(name:string){
-            return (name.split('-').slice(-1))[0];
-          }
           const selected = waypointSymbol === wp.symbol;
+          const wpp = getWaypointProps(wp);
+          const size = wpp.size.factor*factor;
           const wpSx = {
             ...sx.circle,
             backgroundColor: badgeColor(wpName(wp.type)),
-            width: `${factor*10}px`,
-            height: `${factor*10}px`,
-            left: `${((wp.x)+(boundry?.x.offset||0)-5)*factor}px`,
-            top: `${dimensions.height + 80+((wp.y)+(boundry?.y.offset||0)-5)*factor}px`,
-            boxShadow: `inset 0 0 ${factor*2}px #000`,
-            border: selected?`${factor/2}px solid #fff`:'1px solid #000',
+            width: `${size*10}px`,
+            height: `${size*10}px`,
+            left: `${((wp.x)+(boundry?.x.offset||0)-5)*factor - size}px`,
+            top: `${dimensions.height + 100+((wp.y)+(boundry?.y.offset||0)-5)*factor - size}px`,
+            boxShadow: `inset 0 0 ${size*2}px #000`,
+            border: selected?`${size/2}px solid #fff`:'1px solid #000',
           }
           return (
             <Tooltip title={toWordFirstCharUpper(wp.type)+' '+wpName(wp.symbol)}>
@@ -147,6 +166,7 @@ export default function WaypointMapCard(props:{waypoints:Waypoint[], system:Syst
           )
         })}
       </Box>
+      {waypoints.filter(wp=>waypointSymbol===wp.symbol).map(wp=>{return (<WaypointInfoCard waypoint={wp} />)})}
     </Box>
   );
 }

@@ -1,0 +1,101 @@
+{
+    "PLANET":{
+        "zindex": 10,
+        "size":{
+            "factor":1
+        },
+        "color":{
+            "base":["#20A739","#20A788","#20A753","#42A720","#68A720","#7EA720"],
+            "shadow":["#023020","#2E4B05","#084B05","#064A2C","#064A3E","#035259"],
+            "highlight":["#5CEEFB","#5CFBBB","#4BFE64","#88FE4B"]
+        }
+    },
+    "GAS_GIANT":{
+        "zindex": 5,
+        "size":{
+            "factor":1.5
+        },
+        "color":{
+            "base":["#D3C51D","#F18B5D"],
+            "shadow":["#F4A100","#F46F00"],
+            "highlight":["#FE9C4B","#FEC14B"]
+        }
+    },
+    "MOON":{
+        "zindex": 11,
+        "size":{
+            "factor":0.5
+        },
+        "color":{
+            "base":["#8F6719","#8F7C19","#8F5B19"],
+            "shadow":["#5C3503","#5C4C03"],
+            "highlight":["#938665"]
+        }
+    },
+    "ORBITAL_STATION":{
+        "zindex": 12,
+        "size":{
+            "factor":0.5
+        },
+        "color":{
+            "base":[],
+            "shadow":[],
+            "highlight":[]
+        }
+    },
+    "JUMP_GATE":{
+        "zindex": 15,
+        "size":{
+            "factor":0.5
+        },
+        "color":{
+            "base":[],
+            "shadow":[],
+            "highlight":[]
+        }
+    },
+    "ASTEROID_FIELD":{
+        "zindex": 5,
+        "size":{
+            "factor":0.5
+        },
+        "color":{
+            "base":[],
+            "shadow":[],
+            "highlight":[]
+        }
+    },
+    "NEBULA":{
+        "zindex": 4,
+        "size":{
+            "factor":0.8
+        },
+        "color":{
+            "base":[],
+            "shadow":[],
+            "highlight":[]
+        }
+    },
+    "DEBRIS_FIELD":{
+        "zindex": 15,
+        "size":{
+            "factor":0.5
+        },
+        "color":{
+            "base":[],
+            "shadow":[],
+            "highlight":[]
+        }
+    },
+    "GRAVITY_WELL":{
+        "zindex": 5,
+        "size":{
+            "factor":0.7
+        },
+        "color":{
+            "base":[],
+            "shadow":[],
+            "highlight":[]
+        }
+    }
+}
