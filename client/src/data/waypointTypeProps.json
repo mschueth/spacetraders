@@ -13,7 +13,7 @@
     "GAS_GIANT":{
         "zindex": 5,
         "size":{
-            "factor":1.5
+            "factor":1.25
         },
         "color":{
             "base":["#D3C51D","#F18B5D"],
@@ -24,7 +24,7 @@
     "MOON":{
         "zindex": 11,
         "size":{
-            "factor":0.5
+            "factor":0.4
         },
         "color":{
             "base":["#8F6719","#8F7C19","#8F5B19"],
@@ -35,7 +35,7 @@
     "ORBITAL_STATION":{
         "zindex": 12,
         "size":{
-            "factor":0.5
+            "factor":0.3
         },
         "color":{
             "base":[],
@@ -46,7 +46,7 @@
     "JUMP_GATE":{
         "zindex": 15,
         "size":{
-            "factor":0.5
+            "factor":0.4
         },
         "color":{
             "base":[],
@@ -57,12 +57,12 @@
     "ASTEROID_FIELD":{
         "zindex": 5,
         "size":{
-            "factor":0.5
+            "factor":0.4
         },
         "color":{
-            "base":[],
-            "shadow":[],
-            "highlight":[]
+            "base":["#8F6719","#8F7C19","#8F5B19"],
+            "shadow":["#5C3503","#5C4C03"],
+            "highlight":["#938665"]
         }
     },
     "NEBULA":{
@@ -90,7 +90,7 @@
     "GRAVITY_WELL":{
         "zindex": 5,
         "size":{
-            "factor":0.7
+            "factor":0.3
         },
         "color":{
             "base":[],
