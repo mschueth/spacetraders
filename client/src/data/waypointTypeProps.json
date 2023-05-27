@@ -6,7 +6,7 @@
         },
         "color":{
             "base":["#20A739","#20A788","#20A753","#42A720","#68A720","#7EA720"],
-            "shadow":["#023020","#2E4B05","#084B05","#064A2C","#064A3E","#035259"],
+            "shadow":["#023020","#2E4B05","#084B05","#064A2C","#064A3E","#035259","#52593b"],
             "highlight":["#5CEEFB","#5CFBBB","#4BFE64","#88FE4B"]
         }
     },
@@ -16,9 +16,9 @@
             "factor":1.25
         },
         "color":{
-            "base":["#D3C51D","#F18B5D"],
+            "base":["#D3C51D","#F18B5D","#ff0000","#ff2400"],
             "shadow":["#F4A100","#F46F00"],
-            "highlight":["#FE9C4B","#FEC14B"]
+            "highlight":["#FEC14B","#e3ff00","#ffdf00"]
         }
     },
     "MOON":{
@@ -27,9 +27,9 @@
             "factor":0.4
         },
         "color":{
-            "base":["#8F6719","#8F7C19","#8F5B19"],
-            "shadow":["#5C3503","#5C4C03"],
-            "highlight":["#938665"]
+            "base":["#757575","#a9a9a9","#778899","#8c92ac","#8F6719","#938665","#8F5B19","#9b7653"],
+            "shadow":["#353839","#232b2b","#100c08","#5C3503","#5C4C03"],
+            "highlight":["#f5f5f5","#f0f8ff","#f2f3f4","#f0ffff","#e3dac9 ","#bc987e","#856d4d","#c3b091"]
         }
     },
     "ORBITAL_STATION":{
@@ -38,9 +38,9 @@
             "factor":0.3
         },
         "color":{
-            "base":[],
-            "shadow":[],
-            "highlight":[]
+            "base":["#4a646c","#536878","#c4c3d0","#b0e0e6"],
+            "shadow":["#353839","#232b2b","#100c08"],
+            "highlight":["#f5f5f5","#f0f8ff","#f2f3f4","#f0ffff"]
         }
     },
     "JUMP_GATE":{
@@ -49,9 +49,9 @@
             "factor":0.4
         },
         "color":{
-            "base":[],
-            "shadow":[],
-            "highlight":[]
+            "base":["#dda0dd","#6495ed","#ee82ee"],
+            "shadow":["#663399","#00008b","#ce2029"],
+            "highlight":["#ff1493","#00ffff","#ff9999"]
         }
     },
     "ASTEROID_FIELD":{
@@ -60,9 +60,9 @@
             "factor":0.4
         },
         "color":{
-            "base":["#8F6719","#8F7C19","#8F5B19"],
+            "base":["#8F6719","#938665","#8F5B19","#9b7653"],
             "shadow":["#5C3503","#5C4C03"],
-            "highlight":["#938665"]
+            "highlight":["#e3dac9 ","#bc987e","#856d4d","#c3b091"]
         }
     },
     "NEBULA":{
@@ -71,9 +71,9 @@
             "factor":0.8
         },
         "color":{
-            "base":[],
-            "shadow":[],
-            "highlight":[]
+            "base":["#b22222","#860111","#8f00ff","#8601af","#880085"],
+            "shadow":["#000060","#23297a","#191970","#483d8b"],
+            "highlight":["#ff1493","#ff33cc","#fd3f92","#d10047"]
         }
     },
     "DEBRIS_FIELD":{
@@ -82,9 +82,9 @@
             "factor":0.5
         },
         "color":{
-            "base":[],
-            "shadow":[],
-            "highlight":[]
+            "base":["#8F6719","#938665","#8F5B19","#9b7653"],
+            "shadow":["#5C3503","#5C4C03","#674846","#483c32","#52593b"],
+            "highlight":["#e3dac9 ","#bc987e","#856d4d","#c3b091"]
         }
     },
     "GRAVITY_WELL":{
@@ -93,9 +93,9 @@
             "factor":0.3
         },
         "color":{
-            "base":[],
-            "shadow":[],
-            "highlight":[]
+            "base":["#ee82ee","#adff2f","#00ffff"],
+            "shadow":["#66023c","#454d32","#003153"],
+            "highlight":["#4b0082","#006400","#000080"]
         }
     }
 }

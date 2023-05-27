@@ -1,0 +1,112 @@
+{   
+    "NEUTRON_STAR":{
+        "zindex": 1, 
+        "size":{
+            "factor":1.5
+        },
+        "color":{
+            "base":["#00bfff","#87cefa","#73c2fb","#80daeb"],
+            "shadow":["#436b95","#26619c","#23297a"],
+            "highlight":["#b0e0e6","#b9f2ff","#e7feff"]
+        }
+    },
+    "RED_STAR":{
+        "zindex": 1,
+        "size":{
+            "factor":0.7
+        },
+        "color":{
+            "base":["#dc143c","#ff5349","#ff0038"],
+            "shadow":["#b22222","#b31b1b","#7c0a02","#480607"],
+            "highlight":["#ff5a36","#ff4500"]
+        }
+    },
+    "ORANGE_STAR":{
+        "zindex": 1,
+        "size":{
+            "factor":0.8
+        },
+        "color":{
+            "base":["#ff4500","#ff5a36","#ff2800","#ff4500"],
+            "shadow":["#b22222","#b31b1b","#7c0a02","#480607"],
+            "highlight":["#ffdab9","#ff7f50","#ffcba4","#ffdead"]
+        }
+    },
+    "BLUE_STAR":{
+        "zindex": 1,
+        "size":{
+            "factor":1.4
+        },
+        "color":{
+            "base":["#00bfff","#87cefa","#73c2fb","#80daeb"],
+            "shadow":["#436b95","#26619c","#23297a","#191970"],
+            "highlight":["#b0e0e6","#b9f2ff","#e7feff"]
+        }
+    },
+    "YOUNG_STAR":{
+        "zindex": 1, 
+        "size":{
+            "factor":0.5
+        },
+        "color":{
+            "base":["#fefe33","#ffd300","#ffcc33","#fefe22"],
+            "shadow":["#f5c71a","#daa520","#b8860b","#9c7c38"],
+            "highlight":["#fcffa4","#fae7b5","#eee8aa"]
+        }
+    },
+    "WHITE_DWARF":{
+        "zindex": 1,
+        "size":{
+            "factor":0.6
+        },
+        "color":{
+            "base":["#ffdab9","#ffcba4","#ffdead"],
+            "shadow":["#e5e4e2","#d3d3d3","#c0c0c0","#808080"],
+            "highlight":["#b0e0e6","#b9f2ff","#e7feff"]
+        }
+    },
+    "BLACK_HOLE":{
+        "zindex": 1,
+        "size":{
+            "factor":1
+        },
+        "color":{
+            "base":["#ee82ee","#adff2f","#00ffff"],
+            "shadow":["#66023c","#454d32","#003153"],
+            "highlight":["#4b0082","#006400","#000080"]
+        }
+    },
+    "HYPERGIANT":{ 
+        "zindex": 1,
+        "size":{
+            "factor":1.8
+        },
+        "color":{
+            "base":["#b0e0e6","#b9f2ff","#e7feff"],
+            "shadow":["#d1bea8","#bc987e","#c3b091"],
+            "highlight":["#ffebcd","#faf0e6","#f5deb3"]
+        }
+    },
+    "NEBULA":{
+        "zindex": 1,
+        "size":{
+            "factor":1
+        },
+        "color":{
+            "base":["#b22222","#860111","#8f00ff","#8601af","#880085"],
+            "shadow":["#000060","#23297a","#191970","#483d8b"],
+            "highlight":["#ff1493","#ff33cc","#fd3f92","#d10047"]
+        }
+    },
+    "UNSTABLE":{
+        "zindex": 1,
+        "size":{
+            "factor":1
+        },
+        "color":{
+            "base":["#ff4500","#ff5a36","#ff2800","#ff4500"],
+            "shadow":["#ee82ee","#adff2f","#00ffff"],
+            "highlight":["#b0e0e6","#b9f2ff","#e7feff"]
+        }
+    }
+}

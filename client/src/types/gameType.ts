@@ -87,3 +87,15 @@ export type WaypointTypeProps={
         highlight:string[],
     }
 }
+
+export type SystemTypeProps={
+    zindex: number,
+    size:{
+        factor:number
+    },
+    color:{
+        base:string[],
+        shadow:string[],
+        highlight:string[],
+    }
+}

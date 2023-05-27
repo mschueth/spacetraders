@@ -12,7 +12,10 @@ import {
   toWordFirstCharUpper,
 } from "../util/formatUtil"
 
-import {getWaypointProps} from "../core/generateGameData"
+import {
+  getWaypointProps,
+  getSystemProps,
+} from "../core/generateGameData"
 
 import { Waypoint } from "../types/generated/waypoint"
 import { System } from "../types/generated/system"
@@ -117,16 +120,21 @@ export default function WaypointMapCard(props:{waypoints:Waypoint[], system:Syst
   const boundry = getBoundry(waypoints);
   const scale = dimensions.width / Math.floor((Math.abs(boundry?.x?.diff || 100 )));
 
+  const syp = getSystemProps(system);
+  const sySize = (syp.size.factor*scale)*15;
+
   const starSx = {
     ...sx.circle,
-    width: `${scale*10}px`,
-    height: `${scale*10}px`,
-    left: `${((boundry?.x.diff||0)/2)*scale - scale}px`,
-    top: `${dimensions.height + 80+((boundry?.y.diff||0)/2)*scale - scale}px`,
-    boxShadow: `inset 0 0 ${scale*2}px #000`,
+    zIndex: 1,
+    backgroundColor: syp.gen.color,
+    width: `${sySize}px`,
+    height: `${sySize}px`,
+    left: `${((boundry.x.diff||1)*scale - sySize)/2}px`, 
+    top: `${100 + dimensions.height + ((boundry.y.diff||1)*scale - sySize)/2}px`, 
+    boxShadow: `inset 0 0 ${sySize*0.1}px #000`,
     border: '1px solid #000',
-    backgroundColor: (system?.type||'').split('_')[0],
-    background:'linear-gradient(127deg,rgba(250,250,250,.75),transparent,transparent),linear-gradient(336deg, rgba(255, 234, 0,.75),transparent, transparent 70%)',
+    background:`linear-gradient(127deg,${syp.gen.shadow},transparent,transparent),linear-gradient(336deg, ${syp.gen.highlight}, transparent 70%)`,
+    transform: `rotate(${syp.gen.rotation}deg)`, 
   }
 
   return (
@@ -136,7 +144,11 @@ export default function WaypointMapCard(props:{waypoints:Waypoint[], system:Syst
           sx={{margin:0, padding:0}}
           ref={ref}
           avatar={
-            <Avatar sx={{ bgcolor: badgeColor(system?.symbol), border: "2px solid",}} aria-label="systemSymbol" variant="rounded">
+            <Avatar sx={{ 
+                bgcolor: syp.gen.color, 
+                background:`linear-gradient(127deg,${syp.gen.shadow},transparent,transparent),linear-gradient(336deg, ${syp.gen.highlight}, transparent 70%)`,
+                border: "2px solid",
+              }} aria-label="systemSymbol" variant="rounded">
               {nameAbr(system?.symbol)}
             </Avatar>
           }
@@ -152,17 +164,7 @@ export default function WaypointMapCard(props:{waypoints:Waypoint[], system:Syst
           const size = (wpp.size.factor*scale)*10;
           const xOffset = (boundry?.x.offset||0)*scale;
           const yOffset = 100 + dimensions.height + (boundry?.y.offset||0)*scale;
-          function adjustForOrbit(){
-            let adj = 0;
-            let p = waypoints.find(p=>(p.orbitals.map(o=>o.symbol)).includes(wp.symbol))
-            if(p){
-              const pp = getWaypointProps(p);
-              adj = (pp.size.factor)*scale*6
-            }
-            console.log({wp,p,adj})
-
-            return adj;
-          };
+          
 
           const wpSx = {
             ...sx.circle,
@@ -175,7 +177,8 @@ export default function WaypointMapCard(props:{waypoints:Waypoint[], system:Syst
             boxShadow: `inset 0 0 ${size*0.1}px #000`,
             border: selected?`${size/20}px solid #fff`:'1px solid #000',
             background:`linear-gradient(127deg,${wpp.gen.shadow},transparent,transparent),linear-gradient(336deg, ${wpp.gen.highlight}, transparent 70%)`,
-            transform: `rotate(${wpp.gen.rotation}deg) translateX(${adjustForOrbit()}px)`, 
+            transform: `rotate(${wpp.gen.rotation}deg) translateX(${wpp.gen.adjustForOrbit(waypoints)*scale}px)`, 
+            filter: `url(${process.env.PUBLIC_URL}/filter/shared.svg#roughpaper)`,
           }
           return (
             <Tooltip title={toWordFirstCharUpper(wp.type)+' '+wpName(wp.symbol)}>

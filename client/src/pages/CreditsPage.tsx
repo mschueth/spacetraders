@@ -70,6 +70,7 @@ export default function CreditsPage(props:{gameData:GameData, setGameData:(gd:Ga
           </Typography>
           <Typography component="h1" variant="body2" sx={sx.bodyText}>
           <List sx={sx.list}>
+            <ListItemText sx={sx.listItemText}><Link href='https://itch.io/game-assets' sx={sx.link} target="_blank">itch.io</Link></ListItemText>
             <ListItemText sx={sx.listItemText}><Link href='https://icons8.com/' sx={sx.link} target="_blank">icons8.com</Link></ListItemText>
             <ListItemText sx={sx.listItemText}><Link href='https://freesvg.org/' sx={sx.link} target="_blank">freesvg.org</Link></ListItemText>
           </List>
@@ -79,3 +80,4 @@ export default function CreditsPage(props:{gameData:GameData, setGameData:(gd:Ga
     </Container>
   );
 }
+// https://deep-fold.itch.io/pixel-planet-generator  -- look into using !!!! 
